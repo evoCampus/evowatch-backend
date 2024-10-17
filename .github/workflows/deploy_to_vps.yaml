@@ -1,0 +1,36 @@
+name: Deploy to VPS
+
+on:
+  repository_dispatch:
+    types:
+      - trigger_deploy
+
+env:
+  DOCKER_COMPOSE_DIR: github
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Copy docker-compose to VPS
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOSTNAME }}
+        username: ${{ secrets.VPS_SSH_USER }}
+        password: ${{ secrets.VPS_SSH_PASS }}
+        source: docker-compose.yaml
+        target: ${{ env.DOCKER_COMPOSE_DIR }}
+        
+    - name: Start containers
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_HOSTNAME }}
+        username: ${{ secrets.VPS_SSH_USER }}
+        password: ${{ secrets.VPS_SSH_PASS }}
+        script: |
+          cd ${{ env.DOCKER_COMPOSE_DIR }}
+          docker compose pull
+          docker compose up -d
