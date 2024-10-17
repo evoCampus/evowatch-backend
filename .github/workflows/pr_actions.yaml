@@ -1,0 +1,79 @@
+name: PR actions
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+    branches: 
+      - main
+  pull_request_review:
+    types:
+      - submitted
+    branches: 
+      - main
+
+jobs:
+  notify-discord:
+    if: |
+      github.event.action != 'synchronize'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build webhook message
+        id: build-webhook-message
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            let actionName;
+            let embedColor;
+
+            if (context.eventName === 'pull_request') {
+              if (context.payload.action === 'opened') {
+                actionName = 'Opened';
+                embedColor = '3439929';
+              }
+              else if (context.payload.action === 'closed') {
+                if (context.payload.pull_request.merged) {
+                  actionName = 'Merged';
+                  embedColor = '8541904';
+                }
+                else {
+                  actionName = 'Closed';
+                  embedColor = '13188151';
+                }
+              }
+            }
+            else if (context.eventName === 'pull_request_review') {
+              if (context.payload.review.state === 'approved') {
+                actionName = 'Approved';
+                embedColor = '32008';
+              }
+              else if (context.payload.review.state === 'changes_requested') {
+                actionName = 'Changes requested';
+                embedColor = '15754300';
+              }
+            }
+
+            const repoName = context.payload.repository.name;
+            const prNumber = context.payload.pull_request.number;
+            const prTitle = context.payload.pull_request.title;
+            
+            return JSON.stringify({
+              content: "",
+              embeds: [
+                {
+                  title: `${actionName}: ${repoName}/#${prNumber} ${prTitle}`,
+                  url: context.payload.pull_request.html_url,
+                  color: embedColor,
+                  author: {
+                    name: context.payload.sender.login,
+                    icon_url: context.payload.sender.avatar_url
+                  }
+                }
+              ]
+            });
+      - name: Send webhook message
+        run: |
+          curl -H 'Content-Type: application/json' -X POST -d '${{ steps.build-webhook-message.outputs.result }}' ${{ secrets.DISCORD_WEBHOOK_URL }}
