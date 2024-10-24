@@ -1,22 +1,25 @@
 ﻿using evoWatch.Database.Repositories;
 using evoWatch.Database.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace evoWatch.Database
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddEvoWatchDatabase(this IServiceCollection services, string? connectionString)
+        public static IServiceCollection AddEvoWatchDatabase(this IServiceCollection services)
         {
-            if(string.IsNullOrWhiteSpace(connectionString))
+            services.AddDbContext<DatabaseContext>((provider, options) =>
             {
-                throw new ArgumentNullException(nameof(connectionString));
-            }
+                var config = provider.GetRequiredService<IConfiguration>();
+                var connectionString = config.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString);
+            });
+
             services.AddScoped<IUserRepository, UserRepository>();
-            
+
             return services;
         }
     }
