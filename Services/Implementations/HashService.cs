@@ -3,7 +3,7 @@ using evoWatch.Models;
 
 namespace evoWatch.Services.Implementations
 {
-    public class HashService
+    public class HashService : IHashService
     {
         private const int KEY_SIZE = 256 / 8;
 

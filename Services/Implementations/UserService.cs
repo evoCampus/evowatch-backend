@@ -7,12 +7,12 @@ namespace evoWatch.Services.Implementations
     public class UserService : IUserService
     {
         private readonly DatabaseContext _context;
-        private readonly HashService _hashService;
+        private readonly IHashService _hashService;
 
-        public UserService(DatabaseContext context)
+        public UserService(DatabaseContext context, IHashService hashService)
         {
-               _context = context;
-               _hashService = new HashService();
+            _context = context;
+            _hashService = hashService;
         }
         public void addUser(UserDTO user)
         {
