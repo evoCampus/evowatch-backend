@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Text.Json;
 
-namespace evoWatch.Models
+namespace evoWatch.Database.Models
 {
     public class User
     {
@@ -31,7 +30,7 @@ namespace evoWatch.Models
         }
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonSerializer.Serialize(this);
         }
     }
 }

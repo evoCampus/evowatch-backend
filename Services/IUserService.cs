@@ -1,11 +1,11 @@
-﻿using evoWatch.Models;
-using evoWatch.Models.DTO;
+﻿using evoWatch.Database.Models;
+using evoWatch.DTOs;
 
 namespace evoWatch.Services
 {
     public interface IUserService
     {
-        void addUser(UserDTO user);
-        List<User> getUsers();
+        Task AddUserAsync(UserDTO user);
+        Task<List<User>> GetUsersAsync();
     }
 }

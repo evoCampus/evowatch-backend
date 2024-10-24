@@ -1,18 +1,18 @@
-﻿using evoWatch.DatabaseRelated;
-using evoWatch.Models;
-using evoWatch.Models.DTO;
+﻿using evoWatch.Database.Models;
+using evoWatch.Database.Repositories;
+using evoWatch.DTOs;
 
 namespace evoWatch.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly DatabaseContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(DatabaseContext context)
+        public UserService(IUserRepository userRepository)
         {
-               _context = context;
+            _userRepository = userRepository;
         }
-        public void addUser(UserDTO user)
+        public async Task AddUserAsync(UserDTO user)
         {
             var result = new User()
             {
@@ -23,15 +23,12 @@ namespace evoWatch.Services.Implementations
                 PasswordHash = user.Password,
                 PasswordSalt = new byte[] { 1, 2, 3 }
             };
-            _context.Users.Add(result);
-            _context.SaveChanges();
+            await _userRepository.AddUserAsync(result);
         }
 
-        public List<User> getUsers()
+        public async Task<List<User>> GetUsersAsync()
         {
-            var result = _context.Users.ToList();
-
-            return result;
+            return await _userRepository.GetUsersAsync();
         }
     }
 }

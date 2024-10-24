@@ -1,5 +1,5 @@
-﻿using evoWatch.Models;
-using evoWatch.Models.DTO;
+﻿using System.Net.Mime;
+using evoWatch.DTOs;
 using evoWatch.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,17 +16,24 @@ namespace evoWatch.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
-        public IActionResult AddUser([FromBody]UserDTO user)
+        /// <summary> 
+        /// Registers user
+        /// </summary>
+        /// <param name="user">User to register</param>
+        /// <response code="200">User was succesfully registered</response>
+        [HttpPost(Name = nameof(AddUser))]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> AddUser([FromBody]UserDTO user)
         {
-            _userService.addUser(user);
+            await _userService.AddUserAsync(user);
             return Ok();
         }
 
         [HttpGet]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var result = _userService.getUsers();
+            var result = await _userService.GetUsersAsync();
             return Ok(result);
         }
     }

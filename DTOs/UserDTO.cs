@@ -1,4 +1,4 @@
-﻿namespace evoWatch.Models.DTO
+﻿namespace evoWatch.DTOs
 {
     public class UserDTO
     {
