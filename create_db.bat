@@ -10,6 +10,6 @@ timeout 5 > nul
 
 echo Applying migrations...
 
-dotnet ef database update
+dotnet ef database update --project evoWatch
 
 @echo on

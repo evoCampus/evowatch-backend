@@ -1,7 +1,7 @@
-﻿using evoWatch.Models;
+﻿using evoWatch.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace evoWatch.DatabaseRelated
+namespace evoWatch.Database
 {
     public class DatabaseContext : DbContext
     {

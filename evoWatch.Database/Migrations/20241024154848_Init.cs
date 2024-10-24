@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace evoWatch.Migrations
+namespace evoWatch.Database.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration

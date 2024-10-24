@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "evoWatch", "evoWatch.csproj", "{4D4CD5D2-39B1-44DF-8AB3-23F380ED1615}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "evoWatch.Database", "evoWatch.Database\evoWatch.Database.csproj", "{0146DE44-03CE-4527-AB35-8A058F2BC1DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "evoWatch", "evowatch\evoWatch.csproj", "{F8F37D1C-45E7-44AA-BB6F-895606A0F50F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4D4CD5D2-39B1-44DF-8AB3-23F380ED1615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D4CD5D2-39B1-44DF-8AB3-23F380ED1615}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D4CD5D2-39B1-44DF-8AB3-23F380ED1615}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D4CD5D2-39B1-44DF-8AB3-23F380ED1615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0146DE44-03CE-4527-AB35-8A058F2BC1DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0146DE44-03CE-4527-AB35-8A058F2BC1DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0146DE44-03CE-4527-AB35-8A058F2BC1DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0146DE44-03CE-4527-AB35-8A058F2BC1DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8F37D1C-45E7-44AA-BB6F-895606A0F50F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8F37D1C-45E7-44AA-BB6F-895606A0F50F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8F37D1C-45E7-44AA-BB6F-895606A0F50F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8F37D1C-45E7-44AA-BB6F-895606A0F50F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

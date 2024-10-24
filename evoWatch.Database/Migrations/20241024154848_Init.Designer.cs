@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using evoWatch.DatabaseRelated;
+using evoWatch.Database;
 
 #nullable disable
 
-namespace evoWatch.Migrations
+namespace evoWatch.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241017154453_Init")]
+    [Migration("20241024154848_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace evoWatch.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("evoWatch.Models.User", b =>
+            modelBuilder.Entity("evoWatch.Database.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
