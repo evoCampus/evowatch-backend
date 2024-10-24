@@ -1,4 +1,4 @@
-﻿using static evoWatch.Models.Hash;
+﻿using evoWatch.Models;
 
 namespace evoWatch.Services
 {

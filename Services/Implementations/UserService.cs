@@ -1,7 +1,6 @@
 ﻿using evoWatch.DatabaseRelated;
 using evoWatch.Models;
 using evoWatch.Models.DTO;
-using static evoWatch.Models.Hash;
 
 namespace evoWatch.Services.Implementations
 {
@@ -25,8 +24,8 @@ namespace evoWatch.Services.Implementations
                 NormalName = user.NormalName,
                 Nickname = user.Nickname,
                 ImageUrl = user.ImageUrl,
-                PasswordHash = hashResult.hash,
-                PasswordSalt = hashResult.salt
+                PasswordHash = hashResult.Hash,
+                PasswordSalt = hashResult.Salt
             };
             _context.Users.Add(result);
             _context.SaveChanges();
