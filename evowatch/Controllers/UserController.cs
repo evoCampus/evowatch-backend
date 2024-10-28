@@ -24,9 +24,21 @@ namespace evoWatch.Controllers
         [HttpPost(Name = nameof(AddUser))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddUser([FromBody]UserDTO user)
+        public async Task<IActionResult> AddUser([FromBody]AddUserDTO user)
         {
             await _userService.AddUserAsync(user);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Deletes user 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<IActionResult> RemoveUser([FromBody]RemoveUserDTO user)
+        {
+            await _userService.RemoveUserAsync(user); //without verification
             return Ok();
         }
 

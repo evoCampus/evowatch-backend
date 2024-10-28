@@ -1,6 +1,6 @@
 ﻿namespace evoWatch.DTOs
 {
-    public class UserDTO
+    public class AddUserDTO
     {
         public string NormalName { get; set; }
         public string Email { get; set; }

@@ -3,6 +3,7 @@ using evoWatch.Database.Repositories;
 using evoWatch.DTOs;
 using evoWatch.Models;
 
+
 namespace evoWatch.Services.Implementations
 {
     public class UserService : IUserService
@@ -15,7 +16,7 @@ namespace evoWatch.Services.Implementations
             _userRepository = userRepository;
             _hashService = hashService;
         }
-        public async Task AddUserAsync(UserDTO user)
+        public async Task AddUserAsync(AddUserDTO user)
         {
             HashResult hashResult = _hashService.HashPassword(user.Password);
 
@@ -38,6 +39,12 @@ namespace evoWatch.Services.Implementations
         {
             return await _userRepository.GetUserByEmailAsync(Email);
         }
+
+        public async Task RemoveUserAsync(RemoveUserDTO user)
+        {
+            await _userRepository.RemoveUserAsync(user.Id); //without verification
+        }
+
         public async Task<List<User>> GetUsersAsync()
         {
             return await _userRepository.GetUsersAsync();

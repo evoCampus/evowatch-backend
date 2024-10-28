@@ -27,6 +27,14 @@ namespace evoWatch.Database.Repositories.Implementations
             return await _databaseContext.Users.SingleAsync(c => c.Email == Email);
         }
 
+        public async Task RemoveUserAsync(Guid Id)
+        {
+            var result = new User() { Id = Id };
+            _databaseContext.Users.Attach(result);
+            _databaseContext.Users.Remove(result);
+            await _databaseContext.SaveChangesAsync();
+        }
+
         public async Task<List<User>> GetUsersAsync()
         {
             return await _databaseContext.Users.ToListAsync();
