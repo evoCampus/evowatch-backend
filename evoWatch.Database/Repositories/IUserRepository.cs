@@ -10,6 +10,8 @@ namespace evoWatch.Database.Repositories
     public interface IUserRepository
     {
         Task AddUserAsync(User user);
+        Task<User?> GetUserByIdAsync(Guid Id);
+        Task<User?> GetUserByEmailAsync(string Email);
         Task<List<User>> GetUsersAsync();
     }
 }

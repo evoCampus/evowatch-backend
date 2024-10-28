@@ -30,7 +30,14 @@ namespace evoWatch.Services.Implementations
             };
             await _userRepository.AddUserAsync(result);
         }
-
+        public async Task<User?> GetUserByIdAsync(Guid Id) 
+        {
+            return await _userRepository.GetUserByIdAsync(Id);
+        }
+        public async Task<User?> GetUserByEmailAsync(string Email) 
+        {
+            return await _userRepository.GetUserByEmailAsync(Email);
+        }
         public async Task<List<User>> GetUsersAsync()
         {
             return await _userRepository.GetUsersAsync();

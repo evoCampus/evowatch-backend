@@ -31,6 +31,22 @@ namespace evoWatch.Controllers
         }
 
         [HttpGet]
+        [Route("id")]
+        public async Task<IActionResult> GetUserById([FromQuery]Guid Id)
+        {
+            var result = await _userService.GetUserByIdAsync(Id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("email")]
+        public async Task<IActionResult> GetUserByEmail([FromQuery]string Email)
+        {
+            var result = await _userService.GetUserByEmailAsync(Email);
+            return Ok(result);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetUsersAsync();
