@@ -38,7 +38,7 @@ namespace evoWatch.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemoveUser([FromBody]RemoveUserDTO user)
         {
-            await _userService.RemoveUserAsync(user); //without verification
+            await _userService.RemoveUserAsync(user);
             return Ok();
         }
 

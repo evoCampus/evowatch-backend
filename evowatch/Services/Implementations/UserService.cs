@@ -31,18 +31,25 @@ namespace evoWatch.Services.Implementations
             };
             await _userRepository.AddUserAsync(result);
         }
-        public async Task<User?> GetUserByIdAsync(Guid Id) 
+        public async Task<User?> GetUserByIdAsync(Guid Id)
         {
             return await _userRepository.GetUserByIdAsync(Id);
         }
-        public async Task<User?> GetUserByEmailAsync(string Email) 
+        public async Task<User?> GetUserByEmailAsync(string Email)
         {
             return await _userRepository.GetUserByEmailAsync(Email);
         }
 
-        public async Task RemoveUserAsync(RemoveUserDTO user)
+        public async Task RemoveUserAsync(RemoveUserDTO requestUser)
         {
-            await _userRepository.RemoveUserAsync(user.Id); //without verification
+            User? dbUser = await _userRepository.GetUserByIdAsync(requestUser.Id);
+            if (dbUser == null)
+                throw new Exception("The user with the specified ID wasn't found");
+
+            if (!_hashService.VerifyPassword(requestUser.Password, dbUser.PasswordHash, dbUser.PasswordSalt))
+                throw new Exception("Wrong password");
+
+            await _userRepository.RemoveUserAsync(dbUser);
         }
 
         public async Task<List<User>> GetUsersAsync()
