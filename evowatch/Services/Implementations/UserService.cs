@@ -1,4 +1,4 @@
-﻿using evoWatch.Database.Models;
+using evoWatch.Database.Models;
 using evoWatch.Database.Repositories;
 using evoWatch.DTOs;
 using evoWatch.Models;
@@ -40,13 +40,13 @@ namespace evoWatch.Services.Implementations
             return await _userRepository.GetUserByEmailAsync(Email);
         }
 
-        public async Task RemoveUserAsync(RemoveUserDTO requestUser)
+        public async Task RemoveUserAsync(Guid id, string password)
         {
-            User? dbUser = await _userRepository.GetUserByIdAsync(requestUser.Id);
+            User? dbUser = await _userRepository.GetUserByIdAsync(id);
             if (dbUser == null)
                 throw new Exception("The user with the specified ID wasn't found");
 
-            if (!_hashService.VerifyPassword(requestUser.Password, dbUser.PasswordHash, dbUser.PasswordSalt))
+            if (!_hashService.VerifyPassword(password, dbUser.PasswordHash, dbUser.PasswordSalt))
                 throw new Exception("Wrong password");
 
             await _userRepository.RemoveUserAsync(dbUser);

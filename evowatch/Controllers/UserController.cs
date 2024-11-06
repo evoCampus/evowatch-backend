@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using evoWatch.DTOs;
+using evoWatch.Exceptions;
 using evoWatch.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,10 +36,22 @@ namespace evoWatch.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [HttpDelete]
-        public async Task<IActionResult> RemoveUser([FromBody]RemoveUserDTO user)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveUser(Guid id, [FromHeader]string password)
         {
-            await _userService.RemoveUserAsync(user);
+            try
+            {
+                await _userService.RemoveUserAsync(id, password);
+            }
+            catch (UserNotFoundException)
+            {
+                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
+            }
+            catch (WrongPasswordException)
+            {
+                return Unauthorized();
+            }
+
             return Ok();
         }
 
