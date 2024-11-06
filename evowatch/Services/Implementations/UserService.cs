@@ -1,6 +1,7 @@
-using evoWatch.Database.Models;
+﻿using evoWatch.Database.Models;
 using evoWatch.Database.Repositories;
 using evoWatch.DTOs;
+using evoWatch.Exceptions;
 using evoWatch.Models;
 
 
@@ -44,10 +45,10 @@ namespace evoWatch.Services.Implementations
         {
             User? dbUser = await _userRepository.GetUserByIdAsync(id);
             if (dbUser == null)
-                throw new Exception("The user with the specified ID wasn't found");
+                throw new UserNotFoundException();
 
             if (!_hashService.VerifyPassword(password, dbUser.PasswordHash, dbUser.PasswordSalt))
-                throw new Exception("Wrong password");
+                throw new WrongPasswordException();
 
             await _userRepository.RemoveUserAsync(dbUser);
         }
