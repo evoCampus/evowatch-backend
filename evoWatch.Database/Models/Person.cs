@@ -4,12 +4,13 @@ namespace evoWatch.Database.Models
 {
     public class Person
     {
-        public Guid Id { get; set; }
-        public required string Name { get; set; }
-        public required int Age { get; set; }
-        public required string Role { get; set; }
-        public required string Awards { get; set; }
-        public required string Gender { get; set; }
+        
+        public required Guid Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public  string Role { get; set; }
+        public string Awards { get; set; }
+        public  string Gender { get; set; }
 
     }
 }

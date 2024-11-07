@@ -7,6 +7,8 @@ namespace evoWatch.Database
     {
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Person> People { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
 

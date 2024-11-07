@@ -16,6 +16,7 @@ namespace evoWatch.Database
                 var connectionString = config.GetConnectionString("DefaultConnection");
 
                 options.UseSqlServer(connectionString);
+                
             });
 
             services.AddScoped<IUserRepository, UserRepository>();
