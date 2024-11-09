@@ -71,6 +71,21 @@ namespace evoWatch.Controllers
             return Ok(result);
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> ModifyUser([FromQuery]Guid Id, [FromBody]ModifyUserDTO user)
+        {
+            try 
+            { 
+                await _userService.ModifyUserAsync(Id, user);
+            }
+            catch (UserNotFoundException)
+            {
+                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
+            }
+
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {

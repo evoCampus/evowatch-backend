@@ -13,6 +13,7 @@ namespace evoWatch.Database.Repositories
         Task<User?> GetUserByIdAsync(Guid Id);
         Task<User?> GetUserByEmailAsync(string Email);
         Task RemoveUserAsync(User user);
+        Task ModifyUserAsync(Guid id, ModifyUser user);
         Task<List<User>> GetUsersAsync();
     }
 }

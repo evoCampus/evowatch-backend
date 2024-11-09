@@ -53,6 +53,28 @@ namespace evoWatch.Services.Implementations
             await _userRepository.RemoveUserAsync(dbUser);
         }
 
+        public async Task ModifyUserAsync(Guid id, ModifyUserDTO user)
+        {
+            var result = new ModifyUser()
+            {
+                Email = user.Email,
+                NormalName = user.NormalName,
+                Nickname = user.Nickname,
+                ImageUrl = user.ImageUrl,
+                PasswordHash = null,
+                PasswordSalt = null
+            };
+
+            if (user.Password != null)
+            {
+                HashResult hashResult = _hashService.HashPassword(user.Password);
+                result.PasswordHash = hashResult.Hash;
+                result.PasswordSalt = hashResult.Salt;
+            }
+
+            await _userRepository.ModifyUserAsync(id, result);
+        }
+
         public async Task<List<User>> GetUsersAsync()
         {
             return await _userRepository.GetUsersAsync();
