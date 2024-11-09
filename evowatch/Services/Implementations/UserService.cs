@@ -59,28 +59,22 @@ namespace evoWatch.Services.Implementations
             await _userRepository.RemoveUserAsync(dbUser);
         }
 
-        public async Task ModifyUserAsync(Guid id, ModifyUserDTO modifiedUserData)
+        public async Task ModifyUserAsync(Guid id, ModifyUserDTO modifiedUser)
         {
             User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
 
-            var modifiedUser = new ModifyUser()
+            if(modifiedUser.Email != null) user.Email = modifiedUser.Email;
+            if(modifiedUser.NormalName != null) user.NormalName = modifiedUser.NormalName;
+            if(modifiedUser.Nickname != null) user.Nickname = modifiedUser.Nickname;
+            if(modifiedUser.ImageUrl != null) user.ImageUrl = modifiedUser.ImageUrl;
+            if (modifiedUser.Password != null)
             {
-                Email = modifiedUserData.Email,
-                NormalName = modifiedUserData.NormalName,
-                Nickname = modifiedUserData.Nickname,
-                ImageUrl = modifiedUserData.ImageUrl,
-                PasswordHash = null,
-                PasswordSalt = null
-            };
-
-            if (modifiedUserData.Password != null)
-            {
-                HashResult hashResult = _hashService.HashPassword(modifiedUserData.Password);
-                modifiedUser.PasswordHash = hashResult.Hash;
-                modifiedUser.PasswordSalt = hashResult.Salt;
+                HashResult hashResult = _hashService.HashPassword(modifiedUser.Password);
+                user.PasswordHash = hashResult.Hash;
+                user.PasswordSalt = hashResult.Salt;
             }
 
-            await _userRepository.ModifyUserAsync(user, modifiedUser);
+            await _userRepository.ModifyUserAsync(user);
         }
 
         public async Task<List<User>> GetUsersAsync()
