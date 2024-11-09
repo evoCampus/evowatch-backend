@@ -38,7 +38,13 @@ namespace evoWatch.Services.Implementations
         }
         public async Task<User?> GetUserByEmailAsync(string Email)
         {
-            return await _userRepository.GetUserByEmailAsync(Email);
+            try {
+                return await _userRepository.GetUserByEmailAsync(Email);
+            }
+            catch (InvalidOperationException) 
+            {
+                throw new UserNotFoundException();
+            }
         }
 
         public async Task RemoveUserAsync(Guid id, string password)
@@ -53,26 +59,28 @@ namespace evoWatch.Services.Implementations
             await _userRepository.RemoveUserAsync(dbUser);
         }
 
-        public async Task ModifyUserAsync(Guid id, ModifyUserDTO user)
+        public async Task ModifyUserAsync(Guid id, ModifyUserDTO modifiedUserData)
         {
-            var result = new ModifyUser()
+            User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
+
+            var modifiedUser = new ModifyUser()
             {
-                Email = user.Email,
-                NormalName = user.NormalName,
-                Nickname = user.Nickname,
-                ImageUrl = user.ImageUrl,
+                Email = modifiedUserData.Email,
+                NormalName = modifiedUserData.NormalName,
+                Nickname = modifiedUserData.Nickname,
+                ImageUrl = modifiedUserData.ImageUrl,
                 PasswordHash = null,
                 PasswordSalt = null
             };
 
-            if (user.Password != null)
+            if (modifiedUserData.Password != null)
             {
-                HashResult hashResult = _hashService.HashPassword(user.Password);
-                result.PasswordHash = hashResult.Hash;
-                result.PasswordSalt = hashResult.Salt;
+                HashResult hashResult = _hashService.HashPassword(modifiedUserData.Password);
+                modifiedUser.PasswordHash = hashResult.Hash;
+                modifiedUser.PasswordSalt = hashResult.Salt;
             }
 
-            await _userRepository.ModifyUserAsync(id, result);
+            await _userRepository.ModifyUserAsync(user, modifiedUser);
         }
 
         public async Task<List<User>> GetUsersAsync()

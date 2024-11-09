@@ -33,16 +33,14 @@ namespace evoWatch.Database.Repositories.Implementations
             await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task ModifyUserAsync(Guid id, ModifyUser user)
+        public async Task ModifyUserAsync(User user, ModifyUser modifiedUser)
         {
-            User? dbUser = await _databaseContext.Users.FindAsync(id);
-
-            if(user.Email != null) dbUser.Email = user.Email;
-            if(user.NormalName != null) dbUser.NormalName = user.NormalName;
-            if(user.Nickname != null) dbUser.Nickname = user.Nickname;
-            if(user.ImageUrl != null) dbUser.ImageUrl = user.ImageUrl;
-            if(user.PasswordHash != null) dbUser.PasswordHash = user.PasswordHash;
-            if(user.PasswordSalt != null) dbUser.PasswordSalt = user.PasswordSalt;
+            if(modifiedUser.Email != null) user.Email = modifiedUser.Email;
+            if(modifiedUser.NormalName != null) user.NormalName = modifiedUser.NormalName;
+            if(modifiedUser.Nickname != null) user.Nickname = modifiedUser.Nickname;
+            if(modifiedUser.ImageUrl != null) user.ImageUrl = modifiedUser.ImageUrl;
+            if(modifiedUser.PasswordHash != null) user.PasswordHash = modifiedUser.PasswordHash;
+            if(modifiedUser.PasswordSalt != null) user.PasswordSalt = modifiedUser.PasswordSalt;
             
             _databaseContext.SaveChanges();
         }

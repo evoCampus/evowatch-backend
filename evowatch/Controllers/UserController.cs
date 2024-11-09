@@ -94,7 +94,7 @@ namespace evoWatch.Controllers
                 var result = await _userService.GetUserByEmailAsync(Email);
                 return Ok(result);
             }
-            catch (InvalidOperationException)
+            catch (UserNotFoundException)
             {
                 return Problem("User with specified Email not found", null, StatusCodes.Status404NotFound, "title", "type");
             }
