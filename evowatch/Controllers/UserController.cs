@@ -1,4 +1,4 @@
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Services;
@@ -21,7 +21,7 @@ namespace evoWatch.Controllers
         /// Registers user
         /// </summary>
         /// <param name="user">User to register</param>
-        /// <response code="200">User was succesfully registered</response>
+        /// <response code="200">User was successfully registered</response>
         [HttpPost(Name = nameof(AddUser))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -34,8 +34,11 @@ namespace evoWatch.Controllers
         /// <summary>
         /// Deletes user 
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <response code="200">User was successfully removed</response>
+        /// <response code="404">User with specified ID not found</response>
+        /// <response code="401">Wrong password</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveUser(Guid id, [FromHeader]string password)
         {
@@ -55,34 +58,55 @@ namespace evoWatch.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Gets user by ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <response code="200">User found, user is returned in body</response>
+        /// <response code="404">User with specified ID not found</response>
         [HttpGet]
         [Route("id")]
         public async Task<IActionResult> GetUserById([FromQuery]Guid Id)
         {
             try 
-        {
-            var result = await _userService.GetUserByIdAsync(Id);
-            return Ok(result);
-        }
+            { 
+                var result = await _userService.GetUserByIdAsync(Id);
+                return Ok(result);
+            }
             catch (UserNotFoundException)
             {
                 return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
             }
         }
+
+        /// <summary>
+        /// Gets user by Email
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <response code="200">User found, user is returned in body</response>
+        /// <response code="404">User with specified Email not found</response>
         [HttpGet]
         [Route("email")]
         public async Task<IActionResult> GetUserByEmail([FromQuery]string Email)
         {
             try 
-        {
-            var result = await _userService.GetUserByEmailAsync(Email);
-            return Ok(result);
-        }
+            { 
+                var result = await _userService.GetUserByEmailAsync(Email);
+                return Ok(result);
+            }
             catch (InvalidOperationException)
             {
                 return Problem("User with specified Email not found", null, StatusCodes.Status404NotFound, "title", "type");
             }
         }
+
+        /// <summary>
+        /// Modify user
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="user"></param>
+        /// <response code="200">User was successfully modified</response>
+        /// <response code="404">User with specified ID not found</response>
         [HttpPatch]
         public async Task<IActionResult> ModifyUser([FromQuery]Guid Id, [FromBody]ModifyUserDTO user)
         {
