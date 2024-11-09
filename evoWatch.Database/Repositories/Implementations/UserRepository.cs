@@ -35,7 +35,7 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task ModifyUserAsync(Guid id, ModifyUser user)
         {
-            User dbUser = await _databaseContext.Users.FindAsync(id);
+            User? dbUser = await _databaseContext.Users.FindAsync(id);
 
             if(user.Email != null) dbUser.Email = user.Email;
             if(user.NormalName != null) dbUser.NormalName = user.NormalName;

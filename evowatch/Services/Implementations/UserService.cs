@@ -34,7 +34,7 @@ namespace evoWatch.Services.Implementations
         }
         public async Task<User?> GetUserByIdAsync(Guid Id)
         {
-            return await _userRepository.GetUserByIdAsync(Id);
+            return await _userRepository.GetUserByIdAsync(Id) ?? throw new UserNotFoundException();
         }
         public async Task<User?> GetUserByEmailAsync(string Email)
         {

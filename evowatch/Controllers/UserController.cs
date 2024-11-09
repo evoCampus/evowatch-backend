@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Services;
@@ -59,18 +59,30 @@ namespace evoWatch.Controllers
         [Route("id")]
         public async Task<IActionResult> GetUserById([FromQuery]Guid Id)
         {
+            try 
+        {
             var result = await _userService.GetUserByIdAsync(Id);
             return Ok(result);
         }
-
+            catch (UserNotFoundException)
+            {
+                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
+            }
+        }
         [HttpGet]
         [Route("email")]
         public async Task<IActionResult> GetUserByEmail([FromQuery]string Email)
         {
+            try 
+        {
             var result = await _userService.GetUserByEmailAsync(Email);
             return Ok(result);
         }
-
+            catch (InvalidOperationException)
+            {
+                return Problem("User with specified Email not found", null, StatusCodes.Status404NotFound, "title", "type");
+            }
+        }
         [HttpPatch]
         public async Task<IActionResult> ModifyUser([FromQuery]Guid Id, [FromBody]ModifyUserDTO user)
         {
