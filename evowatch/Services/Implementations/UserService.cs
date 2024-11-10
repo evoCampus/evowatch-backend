@@ -4,7 +4,6 @@ using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Models;
 
-
 namespace evoWatch.Services.Implementations
 {
     public class UserService : IUserService
@@ -32,29 +31,23 @@ namespace evoWatch.Services.Implementations
             };
             await _userRepository.AddUserAsync(result);
         }
-        public async Task<User?> GetUserByIdAsync(Guid Id)
+        public async Task<User> GetUserByIdAsync(Guid id)
         {
-            return await _userRepository.GetUserByIdAsync(Id) ?? throw new UserNotFoundException();
+            return await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
         }
-        public async Task<User?> GetUserByEmailAsync(string Email)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            try {
-                return await _userRepository.GetUserByEmailAsync(Email);
-            }
-            catch (InvalidOperationException) 
-            {
-                throw new UserNotFoundException();
-            }
+            return await _userRepository.GetUserByEmailAsync(email) ?? throw new UserNotFoundException();
         }
 
         public async Task RemoveUserAsync(Guid id, string password)
         {
-            User? dbUser = await _userRepository.GetUserByIdAsync(id);
-            if (dbUser == null)
-                throw new UserNotFoundException();
+            User dbUser = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
 
             if (!_hashService.VerifyPassword(password, dbUser.PasswordHash, dbUser.PasswordSalt))
+            {
                 throw new WrongPasswordException();
+            }
 
             await _userRepository.RemoveUserAsync(dbUser);
         }
@@ -74,7 +67,7 @@ namespace evoWatch.Services.Implementations
                 user.PasswordSalt = hashResult.Salt;
             }
 
-            await _userRepository.ModifyUserAsync(user);
+            await _userRepository.ModifyUserAsync();
         }
 
         public async Task<List<User>> GetUsersAsync()

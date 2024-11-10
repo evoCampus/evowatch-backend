@@ -1,7 +1,4 @@
-﻿
-using System.Runtime.InteropServices;
-
-namespace evoWatch.DTOs
+﻿namespace evoWatch.DTOs
 {
     public class ModifyUserDTO
     {

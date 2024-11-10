@@ -24,7 +24,7 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task<User?> GetUserByEmailAsync(string Email)
         {
-            return await _databaseContext.Users.SingleAsync(c => c.Email == Email);
+            return await _databaseContext.Users.SingleOrDefaultAsync(c => c.Email == Email);
         }
 
         public async Task RemoveUserAsync(User user)
@@ -33,10 +33,9 @@ namespace evoWatch.Database.Repositories.Implementations
             await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task ModifyUserAsync(User user)
+        public async Task ModifyUserAsync()
         {
-            _databaseContext.Attach(user);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
 
         public async Task<List<User>> GetUsersAsync()

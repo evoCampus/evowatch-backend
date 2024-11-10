@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
-
-namespace evoWatch.DTOs
+﻿namespace evoWatch.DTOs
 {
     public class AddUserDTO
     {
