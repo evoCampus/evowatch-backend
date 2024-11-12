@@ -2,9 +2,15 @@
 
 namespace evoWatch.Database.Models
 {
-    internal class PersonMoviesConnectionTable
+    public class PersonMoviesConnectionTable
     {
-        public virtual MoviesAndEpisodes Movies { get; set; }
-        public virtual Person Person { get; set; }
+        public Guid PersoniD { get; set; }
+        public Person People { get; set; }
+
+
+
+        public Guid MoviesAndEpisodesiD { get; set; }
+        public MoviesAndEpisodes MoviesEpisodes { get; set; }
+        
     }
 }

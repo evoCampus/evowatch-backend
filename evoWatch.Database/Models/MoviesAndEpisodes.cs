@@ -4,16 +4,22 @@ namespace evoWatch.Database.Models
 {
     public class MoviesAndEpisodes
     {
-        public Guid Id { get; set; }
+        public required Guid Id { get; set; }
         public required string Title { get; set; }
-        public required string Genre { get; set; }
-        public required DateTime ReleaseYear { get; set; }
+        public  string Genre { get; set; }
+        public  DateTime ReleaseYear { get; set; }
         public string Description { get; set; }
-        public required string Language { get; set; }
-        public required string Awards { get; set; }
+        public  string Language { get; set; }
+        public  string Awards { get; set; }
 
-        public virtual Seasons Season { get; set; }
+        public Guid SeasonId { get; set; } //FK to Season
+        public virtual Seasons Season { get; set; } //navigation property to Season
 
+        public Guid ProductionCompanyId { get; set; } // <-- FK to ProductionCompany
         public virtual ProductionCompany ProductionCompany { get; set; }
+   
+
+        public ICollection<PersonMoviesConnectionTable> PersonMoviesConnections { get; set; }
+        public ICollection<Characters> Characters { get; set; }
     }
 }

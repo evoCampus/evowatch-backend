@@ -6,8 +6,9 @@ namespace evoWatch.Database.Models
     {
         public Guid Id { get; set; }
         public required string Name { get; set; }
-        public required DateTime FoundationYear { get; set; }
-        public required string Country { get; set; }
-        public required string Website { get; set; }
+        public  DateTime FoundationYear { get; set; }
+        public  string Country { get; set; }
+        public string Website { get; set; }
+        public ICollection<MoviesAndEpisodes> MoviesAndEpisodesList { get; set; }
     }
 }
