@@ -12,6 +12,8 @@ namespace evoWatch.Database.Models
         public string Description { get; set; }
         
         public virtual Seasons Season { get; set; }
+        
+        public virtual ICollection<Seasons> Seasons { get; set; }
 
     }
 }

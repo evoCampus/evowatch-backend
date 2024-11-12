@@ -9,6 +9,10 @@ namespace evoWatch.Database.Models
         public required int SeasonCount { get; set; }
         public required int Episodes { get; set; }
 
-        public virtual MoviesAndEpisodes Season { get; set; }
+       
+        public Guid SeriesId { get; set; }  // FK to Series
+        public virtual Series Series { get; set; }  // Navigation property to Series
+
+        public virtual ICollection<MoviesAndEpisodes> MoviesAndEpisodesList { get; set; }
     }
 }
