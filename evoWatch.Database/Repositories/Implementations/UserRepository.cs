@@ -11,10 +11,11 @@ namespace evoWatch.Database.Repositories.Implementations
             _databaseContext = databaseContext;
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<User> AddUserAsync(User user)
         {
             _databaseContext.Users.Add(user);
             await _databaseContext.SaveChangesAsync();
+            return user;
         }
 
         public async Task<User?> GetUserByIdAsync(Guid Id)
@@ -27,15 +28,18 @@ namespace evoWatch.Database.Repositories.Implementations
             return await _databaseContext.Users.SingleOrDefaultAsync(c => c.Email == Email);
         }
 
-        public async Task RemoveUserAsync(User user)
+        public async Task<User> RemoveUserAsync(User user)
         {
             _databaseContext.Users.Remove(user);
             await _databaseContext.SaveChangesAsync();
+            return user;
         }
 
-        public async Task ModifyUserAsync()
+        public async Task<User> ModifyUserAsync(User user, User modifiedUser)
         {
+            _databaseContext.Entry(user).CurrentValues.SetValues(modifiedUser);
             await _databaseContext.SaveChangesAsync();
+            return user;
         }
 
         public async Task<List<User>> GetUsersAsync()

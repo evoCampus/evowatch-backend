@@ -52,22 +52,42 @@ namespace evoWatch.Services.Implementations
             await _userRepository.RemoveUserAsync(dbUser);
         }
 
-        public async Task ModifyUserAsync(Guid id, ModifyUserDTO modifiedUser)
+        public async Task ModifyUserAsync(Guid id, ModifyUserDTO userDTO)
         {
             User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
 
-            if(modifiedUser.Email != null) user.Email = modifiedUser.Email;
-            if(modifiedUser.NormalName != null) user.NormalName = modifiedUser.NormalName;
-            if(modifiedUser.Nickname != null) user.Nickname = modifiedUser.Nickname;
-            if(modifiedUser.ImageUrl != null) user.ImageUrl = modifiedUser.ImageUrl;
-            if (modifiedUser.Password != null)
-            {
-                HashResult hashResult = _hashService.HashPassword(modifiedUser.Password);
-                user.PasswordHash = hashResult.Hash;
-                user.PasswordSalt = hashResult.Salt;
-            }
+            User modifiedUser = new() {
+                Id = user.Id,
+                NormalName = userDTO.NormalName ?? user.NormalName,
+                Email = userDTO.Email ?? user.Email,
+                PasswordHash = user.PasswordHash,
+                PasswordSalt = user.PasswordSalt,
+                IsActive = userDTO.IsActive ?? user.IsActive,
+                Nickname = userDTO.Nickname ?? user.Nickname,
+                ImageUrl = userDTO.ImageUrl ?? user.ImageUrl
+            };
 
-            await _userRepository.ModifyUserAsync();
+            await _userRepository.ModifyUserAsync(user, modifiedUser);
+        }
+
+        public async Task ModifyUserPasswordAsync(Guid id, string password)
+        {
+            User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
+
+            HashResult hashResult = _hashService.HashPassword(password);
+
+            User modifiedUser = new() {
+                Id = user.Id,
+                NormalName = user.NormalName,
+                Email = user.Email,
+                PasswordHash = hashResult.Hash,
+                PasswordSalt = hashResult.Salt,
+                IsActive = user.IsActive,
+                Nickname = user.Nickname,
+                ImageUrl = user.ImageUrl
+            };
+
+            await _userRepository.ModifyUserAsync(user, modifiedUser);
         }
 
         public async Task<List<User>> GetUsersAsync()

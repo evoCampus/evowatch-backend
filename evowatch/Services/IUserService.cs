@@ -10,6 +10,7 @@ namespace evoWatch.Services
         Task<User> GetUserByEmailAsync(string email);
         Task RemoveUserAsync(Guid id, string password);
         Task ModifyUserAsync(Guid id, ModifyUserDTO user);
+        Task ModifyUserPasswordAsync(Guid id, string password);
         Task<List<User>> GetUsersAsync();
     }
 }

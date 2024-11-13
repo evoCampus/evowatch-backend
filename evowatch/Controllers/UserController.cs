@@ -66,10 +66,10 @@ namespace evoWatch.Controllers
         /// <param name="id"></param>
         /// <response code="200">User found, user is returned in body</response>
         /// <response code="404">User with specified ID not found</response>
-        [HttpGet("id", Name = nameof(GetUserById))] 
+        [HttpGet("getuserbyid/{id}", Name = nameof(GetUserById))] 
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUserById([FromQuery]Guid id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             try 
             { 
@@ -88,10 +88,10 @@ namespace evoWatch.Controllers
         /// <param name="email"></param>
         /// <response code="200">User found, user is returned in body</response>
         /// <response code="404">User with specified Email not found</response>
-        [HttpGet("email", Name = nameof(GetUserByEmail))]
+        [HttpGet("getuserbyemail/{email}", Name = nameof(GetUserByEmail))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUserByEmail([FromQuery]string email)
+        public async Task<IActionResult> GetUserByEmail(string email)
         {
             try 
             { 
@@ -111,7 +111,7 @@ namespace evoWatch.Controllers
         /// <param name="user"></param>
         /// <response code="200">User was successfully modified</response>
         /// <response code="404">User with specified ID not found</response>
-        [HttpPatch("id", Name = nameof(ModifyUser))]
+        [HttpPatch("{id}", Name = nameof(ModifyUser))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> ModifyUser(Guid id, [FromBody]ModifyUserDTO user)
@@ -128,7 +128,37 @@ namespace evoWatch.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Modify user's password
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <response code="200">User's password was successfully modified</response>
+        /// <response code="404">User with specified ID not found</response>
+        [HttpPatch("password/{id}", Name = nameof(ModifyUserPassword))]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ModifyUserPassword(Guid id, [FromHeader]string password)
+        {
+            try 
+            { 
+                await _userService.ModifyUserPasswordAsync(id, password);
+            }
+            catch (UserNotFoundException)
+            {
+                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
+            }
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// List all users
+        /// </summary>
+        /// <response code="200"></response>
+        [HttpGet(Name = nameof(GetUsers))]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetUsersAsync();
