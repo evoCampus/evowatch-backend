@@ -16,7 +16,7 @@ namespace evoWatch.Services.Implementations
             _userRepository = userRepository;
             _hashService = hashService;
         }
-        public async Task AddUserAsync(AddUserDTO user)
+        public async Task<UserDTO> AddUserAsync(AddUserDTO user)
         {
             HashResult hashResult = _hashService.HashPassword(user.Password);
 
@@ -29,18 +29,21 @@ namespace evoWatch.Services.Implementations
                 PasswordHash = hashResult.Hash,
                 PasswordSalt = hashResult.Salt
             };
-            await _userRepository.AddUserAsync(result);
+            var response = await _userRepository.AddUserAsync(result);
+            return UserDTO.CreateFromUserDocument(response);
         }
-        public async Task<User> GetUserByIdAsync(Guid id)
+        public async Task<UserDTO> GetUserByIdAsync(Guid id)
         {
-            return await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
+            var result = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
+            return UserDTO.CreateFromUserDocument(result);
         }
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<UserDTO> GetUserByEmailAsync(string email)
         {
-            return await _userRepository.GetUserByEmailAsync(email) ?? throw new UserNotFoundException();
+            var result =  await _userRepository.GetUserByEmailAsync(email) ?? throw new UserNotFoundException();
+            return UserDTO.CreateFromUserDocument(result);
         }
 
-        public async Task RemoveUserAsync(Guid id, string password)
+        public async Task<bool> RemoveUserAsync(Guid id, string password)
         {
             User dbUser = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
 
@@ -49,50 +52,30 @@ namespace evoWatch.Services.Implementations
                 throw new WrongPasswordException();
             }
 
-            await _userRepository.RemoveUserAsync(dbUser);
+            return await _userRepository.RemoveUserAsync(dbUser);
         }
 
-        public async Task ModifyUserAsync(Guid id, ModifyUserDTO userDTO)
+        public async Task<UserDTO> ModifyUserAsync(Guid id, ModifyUserDTO userDTO, string password)
         {
             User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
 
-            User modifiedUser = new() {
-                Id = user.Id,
-                NormalName = userDTO.NormalName ?? user.NormalName,
-                Email = userDTO.Email ?? user.Email,
-                PasswordHash = user.PasswordHash,
-                PasswordSalt = user.PasswordSalt,
-                IsActive = userDTO.IsActive ?? user.IsActive,
-                Nickname = userDTO.Nickname ?? user.Nickname,
-                ImageUrl = userDTO.ImageUrl ?? user.ImageUrl
-            };
+            User modifiedUser = userDTO.ConvertToUserDocument(id, user.PasswordHash, user.PasswordSalt);;
 
-            await _userRepository.ModifyUserAsync(user, modifiedUser);
+            if (!_hashService.VerifyPassword(password, user.PasswordHash, user.PasswordSalt))
+            {
+                HashResult hashResult = _hashService.HashPassword(password);
+                modifiedUser.PasswordHash = hashResult.Hash;
+                modifiedUser.PasswordSalt = hashResult.Salt;
+            }
+
+            var result = await _userRepository.ModifyUserAsync(modifiedUser);
+            return UserDTO.CreateFromUserDocument(result);
         }
 
-        public async Task ModifyUserPasswordAsync(Guid id, string password)
+        public async Task<List<UserDTO>> GetUsersAsync()
         {
-            User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
-
-            HashResult hashResult = _hashService.HashPassword(password);
-
-            User modifiedUser = new() {
-                Id = user.Id,
-                NormalName = user.NormalName,
-                Email = user.Email,
-                PasswordHash = hashResult.Hash,
-                PasswordSalt = hashResult.Salt,
-                IsActive = user.IsActive,
-                Nickname = user.Nickname,
-                ImageUrl = user.ImageUrl
-            };
-
-            await _userRepository.ModifyUserAsync(user, modifiedUser);
-        }
-
-        public async Task<List<User>> GetUsersAsync()
-        {
-            return await _userRepository.GetUsersAsync();
+            var result = await _userRepository.GetUsersAsync();
+            return result.Select(user => UserDTO.CreateFromUserDocument(user)).ToList();
         }
     }
 }

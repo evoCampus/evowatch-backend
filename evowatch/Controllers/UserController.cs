@@ -46,11 +46,14 @@ namespace evoWatch.Controllers
         {
             try
             {
-                await _userService.RemoveUserAsync(id, password);
+                if(!await _userService.RemoveUserAsync(id, password))
+                {
+                    return Problem($"Couldn't delete the user with the specified ID: {id}", null, StatusCodes.Status400BadRequest);
+                }
             }
             catch (UserNotFoundException)
             {
-                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
+                return Problem($"User with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
             catch (WrongPasswordException)
             {
@@ -66,7 +69,7 @@ namespace evoWatch.Controllers
         /// <param name="id"></param>
         /// <response code="200">User found, user is returned in body</response>
         /// <response code="404">User with specified ID not found</response>
-        [HttpGet("getuserbyid/{id}", Name = nameof(GetUserById))] 
+        [HttpGet("id/{id}", Name = nameof(GetUserById))] 
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUserById(Guid id)
@@ -78,7 +81,7 @@ namespace evoWatch.Controllers
             }
             catch (UserNotFoundException)
             {
-                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
+                return Problem($"User with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
         }
 
@@ -88,7 +91,7 @@ namespace evoWatch.Controllers
         /// <param name="email"></param>
         /// <response code="200">User found, user is returned in body</response>
         /// <response code="404">User with specified Email not found</response>
-        [HttpGet("getuserbyemail/{email}", Name = nameof(GetUserByEmail))]
+        [HttpGet("email/{email}", Name = nameof(GetUserByEmail))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUserByEmail(string email)
@@ -100,7 +103,7 @@ namespace evoWatch.Controllers
             }
             catch (UserNotFoundException)
             {
-                return Problem($"User with specified Email address of {email} not found", null, StatusCodes.Status404NotFound, "title", "type");
+                return Problem($"User with specified Email address of {email} not found", null, StatusCodes.Status404NotFound);
             }
         }
 
@@ -111,42 +114,18 @@ namespace evoWatch.Controllers
         /// <param name="user"></param>
         /// <response code="200">User was successfully modified</response>
         /// <response code="404">User with specified ID not found</response>
-        [HttpPatch("{id}", Name = nameof(ModifyUser))]
+        [HttpPut("{id}", Name = nameof(ModifyUser))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ModifyUser(Guid id, [FromBody]ModifyUserDTO user)
+        public async Task<IActionResult> ModifyUser(Guid id, [FromBody]ModifyUserDTO user, [FromHeader]string password)
         {
-            try 
+            try
             { 
-                await _userService.ModifyUserAsync(id, user);
+                await _userService.ModifyUserAsync(id, user, password);
             }
             catch (UserNotFoundException)
             {
-                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
-            }
-
-            return Ok();
-        }
-
-        /// <summary>
-        /// Modify user's password
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="password"></param>
-        /// <response code="200">User's password was successfully modified</response>
-        /// <response code="404">User with specified ID not found</response>
-        [HttpPatch("password/{id}", Name = nameof(ModifyUserPassword))]
-        [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ModifyUserPassword(Guid id, [FromHeader]string password)
-        {
-            try 
-            { 
-                await _userService.ModifyUserPasswordAsync(id, password);
-            }
-            catch (UserNotFoundException)
-            {
-                return Problem("User with specified ID not found", null, StatusCodes.Status404NotFound, "title", "type");
+                return Problem($"User with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
 
             return Ok();

@@ -5,12 +5,11 @@ namespace evoWatch.Services
 {
     public interface IUserService
     {
-        Task AddUserAsync(AddUserDTO user);
-        Task<User> GetUserByIdAsync(Guid id);
-        Task<User> GetUserByEmailAsync(string email);
-        Task RemoveUserAsync(Guid id, string password);
-        Task ModifyUserAsync(Guid id, ModifyUserDTO user);
-        Task ModifyUserPasswordAsync(Guid id, string password);
-        Task<List<User>> GetUsersAsync();
+        Task<UserDTO> AddUserAsync(AddUserDTO user);
+        Task<UserDTO> GetUserByIdAsync(Guid id);
+        Task<UserDTO> GetUserByEmailAsync(string email);
+        Task<bool> RemoveUserAsync(Guid id, string password);
+        Task<UserDTO> ModifyUserAsync(Guid id, ModifyUserDTO user, string password);
+        Task<List<UserDTO>> GetUsersAsync();
     }
 }

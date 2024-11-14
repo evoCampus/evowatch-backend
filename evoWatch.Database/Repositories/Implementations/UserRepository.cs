@@ -13,33 +13,41 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task<User> AddUserAsync(User user)
         {
-            _databaseContext.Users.Add(user);
+            var result = _databaseContext.Users.Add(user);
             await _databaseContext.SaveChangesAsync();
-            return user;
+            return result.Entity;
         }
 
-        public async Task<User?> GetUserByIdAsync(Guid Id)
+        public async Task<User?> GetUserByIdAsync(Guid id)
         { 
-            return await _databaseContext.Users.FindAsync(Id);
+            return await _databaseContext.Users.FindAsync(id);
         }
 
-        public async Task<User?> GetUserByEmailAsync(string Email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await _databaseContext.Users.SingleOrDefaultAsync(c => c.Email == Email);
+            return await _databaseContext.Users.SingleOrDefaultAsync(user => user.Email == email);
         }
 
-        public async Task<User> RemoveUserAsync(User user)
+        public async Task<bool> RemoveUserAsync(User user)
         {
-            _databaseContext.Users.Remove(user);
+            try
+            {
+                _databaseContext.Users.Remove(user);
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+
             await _databaseContext.SaveChangesAsync();
-            return user;
+            return true;
         }
 
-        public async Task<User> ModifyUserAsync(User user, User modifiedUser)
+        public async Task<User> ModifyUserAsync(User modifiedUser)
         {
-            _databaseContext.Entry(user).CurrentValues.SetValues(modifiedUser);
+            var result = _databaseContext.Update(modifiedUser);
             await _databaseContext.SaveChangesAsync();
-            return user;
+            return result.Entity;
         }
 
         public async Task<List<User>> GetUsersAsync()
