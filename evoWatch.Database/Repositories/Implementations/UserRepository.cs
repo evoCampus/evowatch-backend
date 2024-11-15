@@ -13,7 +13,7 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task<User> AddUserAsync(User user)
         {
-            var result = _databaseContext.Users.Add(user);
+            var result = await _databaseContext.Users.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
             return result.Entity;
         }
