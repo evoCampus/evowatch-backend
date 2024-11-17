@@ -1,3 +1,4 @@
+using evoWatch;
 using evoWatch.Database;
 
 var builder = WebApplication.CreateBuilder(args);
