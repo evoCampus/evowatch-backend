@@ -20,6 +20,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddEvoWatchDatabase();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IHashService, HashService>();
+builder.Services.AddScoped<ISeriesService, SeriesService>();
 
 var app = builder.Build();
 

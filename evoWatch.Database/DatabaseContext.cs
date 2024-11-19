@@ -7,68 +7,65 @@ namespace evoWatch.Database
     {
         public DbSet<User> Users { get; set; }
 
+       
 
+      
 
+        
 
+        public DbSet<Character> Characters { get; set; }
+        public DbSet<Episode> MoviesAndEpisodes { get; set; }
         public DbSet<Person> People { get; set; }
+        public DbSet<PersonEpisode> PeopleMoviesConnection { get; set; }
+        public DbSet<ProductionCompany> ProductionCompany { get; set; }
+        public DbSet<Season> Seasons { get; set; }
+        public DbSet<Series> Series { get; set; }
 
-        public DbSet<MoviesAndEpisodes> MoviesAndEpisodes { get; set; }
 
-        public DbSet<PersonMoviesConnectionTable> PeopleMoviesConnection {  get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // rRelationship between MoviesAndEpisodes and ProductionCompany
-            modelBuilder.Entity<MoviesAndEpisodes>()
-                .HasOne(m => m.ProductionCompany)
-                .WithMany(pc => pc.MoviesAndEpisodesList) // <-- Collection in ProductionCompany
-                .HasForeignKey(m => m.ProductionCompanyId); // FK key in MoviesAndEpisodes
+            modelBuilder.Entity<Series>()
+               .HasMany(x => x.Seasons)
+               .WithOne(x => x.Series)
+               .HasForeignKey(x => x.SeriesId);
 
-            // one-to-many relationship between Series and Seasons
+            modelBuilder.Entity<Season>()
+               .HasMany(x => x.Episodes)
+               .WithOne(x => x.Seasons)
+               .HasForeignKey(x => x.SeasonId);
 
-            modelBuilder.Entity<Seasons>()
-                .HasOne(s => s.Series)
-                .WithMany(series => series.Seasons)
-                .HasForeignKey(s => s.SeriesId);
+            modelBuilder.Entity<ProductionCompany>()
+                .HasMany(x => x.Episodes)
+                .WithOne(x => x.ProductionCompanies)
+                .HasForeignKey(x => x.ProductionCompanyId);
 
-            // Configure one-to-many relationship between Seasons and MoviesAndEpisodes
-            modelBuilder.Entity<MoviesAndEpisodes>()
-                .HasOne(m => m.Season)
-                .WithMany(s => s.MoviesAndEpisodesList)
-                .HasForeignKey(m => m.SeasonId);
+            modelBuilder.Entity<Episode>()
+               .HasMany(x => x.Characters)
+               .WithOne(x => x.Episodes)
+               .HasForeignKey(x => x.EpisodesId);
 
-            // Configure composite key for the connection table
-            modelBuilder.Entity<PersonMoviesConnectionTable>()
-                .HasKey(pm => new { pm.PersoniD, pm.MoviesAndEpisodesiD });
+            modelBuilder.Entity<Episode>()
+               .HasMany(x => x.PersonEpisodes)
+               .WithOne(x => x.Episodes)
+               .HasForeignKey(x => x.EpisodesId);
 
-            // Configure relationship from PersonMoviesConnectionTable to Person
-            modelBuilder.Entity<PersonMoviesConnectionTable>()
-                .HasOne(pm => pm.People)
-                .WithMany(p => p.PersonMoviesConnections)
-                .HasForeignKey(pm => pm.PersoniD);
+            modelBuilder.Entity<Person>()
+               .HasMany(x => x.Characters)
+               .WithOne(x => x.People)
+               .HasForeignKey(x => x.PersonId);
 
-            // Configure relationship from PersonMoviesConnectionTable to MoviesAndEpisodes
-            modelBuilder.Entity<PersonMoviesConnectionTable>()
-                .HasOne(pm => pm.MoviesEpisodes)
-                .WithMany(m => m.PersonMoviesConnections)
-                .HasForeignKey(pm => pm.MoviesAndEpisodesiD);
+            modelBuilder.Entity<Person>()
+              .HasMany(x => x.PeopleEpisodes)
+              .WithOne(x => x.People)
+              .HasForeignKey(x => x.PersoniD);
 
-            // Define the composite primary key for the Character table
-            modelBuilder.Entity<Characters>()
-                .HasKey(c => new { c.PersonId, c.MoviesAndEpisodesId });
+            modelBuilder.Entity<PersonEpisode>()
+                .HasKey(x => new { x.PersoniD, x.EpisodesId });
 
-            // Define the relationship between Person and Character (junction table)
-            modelBuilder.Entity<Characters>()
-                .HasOne(c => c.Person)
-                .WithMany(p => p.Characters)  // <-- Now 'Characters' exists in Person class
-                .HasForeignKey(c => c.PersonId); // Foreign key to Person
 
-            // Define the relationship between MoviesAndEpisodes and Character (junction table)
-            modelBuilder.Entity<Characters>()
-                .HasOne(c => c.MoviesAndEpisodes)
-                .WithMany(m => m.Characters)  // <-- Now 'Characters' exists in MoviesAndEpisodes class
-                .HasForeignKey(c => c.MoviesAndEpisodesId); // Foreign key to MoviesAndEpisodes
+
 
         }
 

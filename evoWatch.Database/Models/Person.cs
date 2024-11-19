@@ -12,8 +12,8 @@ namespace evoWatch.Database.Models
         public string Awards { get; set; }
         public  string Gender { get; set; }
 
-        public ICollection<PersonMoviesConnectionTable> PersonMoviesConnections { get; set; }
-        public ICollection<Characters> Characters { get; set; }
+        public ICollection<PersonEpisode> PeopleEpisodes { get; set; }
+        public ICollection<Character> Characters { get; set; }
 
     }
 }
