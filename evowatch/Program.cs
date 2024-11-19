@@ -1,6 +1,8 @@
 using System.Reflection;
 using evoWatch;
 using evoWatch.Database;
+using evoWatch.Services.Implementations;
+using evoWatch.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,13 @@ builder.Services.AddSwaggerGen(c => {
 
 builder.Services.AddEvoWatch();
 builder.Services.AddEvoWatchDatabase();
+<<<<<<< HEAD
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IHashService, HashService>();
+builder.Services.AddScoped<ISeriesService, SeriesService>();
+=======
+
+>>>>>>> 3911b52 (Series services and controller  creating)
 
 var app = builder.Build();
 
