@@ -1,5 +1,6 @@
 ﻿using evoWatch.Database.Models;
 using evoWatch.Database.Repositories;
+using evoWatch.Exceptions;
 using evoWatch.Models;
 using evoWatch.Models.DTOs;
 
@@ -14,24 +15,68 @@ namespace evoWatch.Services.Implementations
             _seriesRepository = seriesRepository;
         }
 
-        public async Task AddSeriesAsync(SeriesDTO series)
+        public async Task<SeriesDTO> GetSeriesByIdAsync(Guid id)
         {
-            var result = new Series()
+            var series = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException();
+
+            return SeriesDTO.CreateFromSeriesDocument(series);
+           
+        }
+
+        public async Task<SeriesDTO> AddSeriesAsync(SeriesDTO series)
+        {
+            var newSeries = new Series()
             {
                 Id = Guid.NewGuid(),
                 Title = series.Title,
                 Genre = series.Genre,
-                ReleaseYear = series.StartYear,
-                FinalYear = series.EndYear
+                ReleaseYear = series.ReleaseYear,
+                FinalYear = series.FinalYear,
+                Description = series.Description
 
             };
 
-            await _seriesRepository.AddSeriesAsync(result);
+            var result = await _seriesRepository.AddSeriesAsync(newSeries);
+            return SeriesDTO.CreateFromSeriesDocument(result);
+
+
+           
         }
 
-        public async Task<List<Series>> GetSeriesAsync()
+        public async Task<IEnumerable<SeriesDTO>> GetSeriesAsync()
         {
-            return await _seriesRepository.GetSeriesAsync();
+            var result =  await _seriesRepository.GetSeriesAsync();
+
+            
+
+            return result.Select(x => SeriesDTO.CreateFromSeriesDocument(x));
+
+
         }
+
+        public async Task<SeriesDTO> UpdateSeriesAsync(Guid id, SeriesDTO series)
+        {
+            var existingSeries = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException(); throw new SeriesNotFoundException();
+
+            existingSeries.Title = series.Title;
+            existingSeries.Genre = series.Genre;
+            existingSeries.ReleaseYear = series.ReleaseYear;
+            existingSeries.FinalYear = series.FinalYear;
+            existingSeries.Description = series.Description;
+
+            
+            var result = await _seriesRepository.UpdateSeriesAsync(existingSeries);
+            return SeriesDTO.CreateFromSeriesDocument(result);
+
+        }
+
+        public async Task<bool> DeleteSeriesAsync(Guid id)
+        {
+            var seriesDelete = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException();
+    
+            return await _seriesRepository.DeleteSeriesAsync(seriesDelete);
+        }
+
+        
     }
 }
