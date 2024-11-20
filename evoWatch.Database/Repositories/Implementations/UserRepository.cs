@@ -33,14 +33,13 @@ namespace evoWatch.Database.Repositories.Implementations
             try
             {
                 _databaseContext.Users.Remove(user);
+                await _databaseContext.SaveChangesAsync();
+                return true;
             }
             catch (InvalidOperationException)
             {
                 return false;
             }
-
-            await _databaseContext.SaveChangesAsync();
-            return true;
         }
 
         public async Task<User> ModifyUserAsync(User modifiedUser)
@@ -50,7 +49,7 @@ namespace evoWatch.Database.Repositories.Implementations
             return result.Entity;
         }
 
-        public async Task<List<User>> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await _databaseContext.Users.ToListAsync();
         }

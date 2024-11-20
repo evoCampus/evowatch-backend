@@ -25,7 +25,7 @@ namespace evoWatch.Controllers
         [HttpPost(Name = nameof(AddUser))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddUser([FromBody]AddUserDTO user)
+        public async Task<IActionResult> AddUser([FromBody] AddUserDTO user)
         {
             await _userService.AddUserAsync(user);
             return Ok();
@@ -38,11 +38,13 @@ namespace evoWatch.Controllers
         /// <param name="password"></param>
         /// <response code="200">User was successfully removed</response>
         /// <response code="404">User with specified ID not found</response>
-        /// <response code="401">Wrong password</response>
+        /// <response code="400">Couldn't delete the user with the specified ID</response>
         [HttpDelete("{id}", Name = nameof(RemoveUser))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> RemoveUser(Guid id, [FromHeader]string password)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RemoveUser(Guid id, [FromHeader] string password)
         {
             try
             {
@@ -72,6 +74,7 @@ namespace evoWatch.Controllers
         [HttpGet("id/{id}", Name = nameof(GetUserById))] 
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             try 
@@ -94,6 +97,7 @@ namespace evoWatch.Controllers
         [HttpGet("email/{email}", Name = nameof(GetUserByEmail))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
             try 
@@ -112,12 +116,14 @@ namespace evoWatch.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="user"></param>
+        /// <param name="password"></param>
         /// <response code="200">User was successfully modified</response>
         /// <response code="404">User with specified ID not found</response>
         [HttpPut("{id}", Name = nameof(ModifyUser))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ModifyUser(Guid id, [FromBody]ModifyUserDTO user, [FromHeader]string password)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ModifyUser(Guid id, [FromBody] ModifyUserDTO user, [FromHeader] string password)
         {
             try
             { 

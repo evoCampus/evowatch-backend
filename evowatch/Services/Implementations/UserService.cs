@@ -72,10 +72,10 @@ namespace evoWatch.Services.Implementations
             return UserDTO.CreateFromUserDocument(result);
         }
 
-        public async Task<List<UserDTO>> GetUsersAsync()
+        public async Task<IEnumerable<UserDTO>> GetUsersAsync()
         {
             var result = await _userRepository.GetUsersAsync();
-            return result.Select(user => UserDTO.CreateFromUserDocument(user)).ToList();
+            return result.Select(user => UserDTO.CreateFromUserDocument(user));
         }
     }
 }

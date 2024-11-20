@@ -14,6 +14,6 @@ namespace evoWatch.Database.Repositories
         Task<User?> GetUserByEmailAsync(string email);
         Task<bool> RemoveUserAsync(User user);
         Task<User> ModifyUserAsync(User modifiedUser);
-        Task<List<User>> GetUsersAsync();
+        Task<IEnumerable<User>> GetUsersAsync();
     }
 }
