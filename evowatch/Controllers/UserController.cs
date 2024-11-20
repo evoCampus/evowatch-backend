@@ -1,5 +1,5 @@
 ﻿using System.Net.Mime;
-using evoWatch.DTOs;
+using evoWatch.Models.DTOs;
 using evoWatch.Services;
 using Microsoft.AspNetCore.Mvc;
 
