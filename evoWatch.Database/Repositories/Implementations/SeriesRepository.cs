@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using evoWatch.Database.Models;
@@ -17,25 +18,54 @@ namespace evoWatch.Database.Repositories.Implementations
             _databaseContext = databaseContext;
         }
 
-        public async Task AddSeriesAsync(Series series)
+        public async Task<Series> AddSeriesAsync(Series series)
         {
-            _databaseContext.Series.Add(series);
+            var result = _databaseContext.Series.Add(series);
             await _databaseContext.SaveChangesAsync();
+
+
+            return result.Entity;
+            
         }
         public async Task<List<Series>> GetSeriesAsync()
         {
-           return await _databaseContext.Series.ToListAsync();
+            return await _databaseContext.Series.ToListAsync();
         }
 
-        public Task DeleteSeriesAsync(Series series)
+        public async Task<bool> DeleteSeriesAsync(Series series)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = _databaseContext.Series.Remove(series);
+                await _databaseContext.SaveChangesAsync();
+                return true;
+            }
+            catch(InvalidOperationException){
+                 
+                return false;   
+            }
+
+            
         }
 
-
-        public Task UpdateSeriesAsync(Series series)
+        //UPDATE
+        public async Task<Series?> GetSeriesByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _databaseContext.Series.FindAsync(id);
+
         }
+
+        public async Task<Series> UpdateSeriesAsync(Series series)
+        {
+            var result = _databaseContext.Series.Update(series);
+            await _databaseContext.SaveChangesAsync();
+
+           return result.Entity;
+            
+        }
+
+        
+
+
     }
 }
