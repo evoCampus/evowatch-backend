@@ -27,7 +27,8 @@ namespace evoWatch.Services.Implementations
                 Nickname = user.Nickname,
                 ImageUrl = user.ImageUrl,
                 PasswordHash = hashResult.Hash,
-                PasswordSalt = hashResult.Salt
+                PasswordSalt = hashResult.Salt,
+                IsActive = true
             };
             var response = await _userRepository.AddUserAsync(result);
             return UserDTO.CreateFromUserDocument(response);

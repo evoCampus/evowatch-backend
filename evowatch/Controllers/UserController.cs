@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Services;
@@ -71,7 +71,7 @@ namespace evoWatch.Controllers
         /// <param name="id"></param>
         /// <response code="200">User found, user is returned in body</response>
         /// <response code="404">User with specified ID not found</response>
-        [HttpGet("id/{id}", Name = nameof(GetUserById))] 
+        [HttpGet("{id:Guid}", Name = nameof(GetUserById))] 
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,7 +94,7 @@ namespace evoWatch.Controllers
         /// <param name="email"></param>
         /// <response code="200">User found, user is returned in body</response>
         /// <response code="404">User with specified Email not found</response>
-        [HttpGet("email/{email}", Name = nameof(GetUserByEmail))]
+        [HttpGet("{email}", Name = nameof(GetUserByEmail))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -20,7 +20,7 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task<User?> GetUserByIdAsync(Guid id)
         { 
-            return await _databaseContext.Users.FindAsync(id);
+            return await _databaseContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<User?> GetUserByEmailAsync(string email)
@@ -51,7 +51,7 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return await _databaseContext.Users.ToListAsync();
+            return await Task.FromResult(_databaseContext.Users.AsEnumerable());
         }
     }
 }
