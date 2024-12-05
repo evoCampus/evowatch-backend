@@ -24,11 +24,11 @@ namespace evoWatch.Controllers
         /// <response code="200">User was successfully registered</response>
         [HttpPost(Name = nameof(AddUser))]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> AddUser([FromBody] AddUserDTO user)
         {
-            await _userService.AddUserAsync(user);
-            return Ok();
+            var result = await _userService.AddUserAsync(user);
+            return Ok(result);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace evoWatch.Controllers
         /// <response code="404">User with specified ID not found</response>
         [HttpGet("{id:Guid}", Name = nameof(GetUserById))] 
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserById(Guid id)
         {
@@ -96,7 +96,7 @@ namespace evoWatch.Controllers
         /// <response code="404">User with specified Email not found</response>
         [HttpGet("{email}", Name = nameof(GetUserByEmail))]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
@@ -121,20 +121,19 @@ namespace evoWatch.Controllers
         /// <response code="404">User with specified ID not found</response>
         [HttpPut("{id}", Name = nameof(ModifyUser))]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ModifyUser(Guid id, [FromBody] ModifyUserDTO user, [FromHeader] string password)
         {
             try
             { 
-                await _userService.ModifyUserAsync(id, user, password);
+                var result = await _userService.ModifyUserAsync(id, user, password);
+                return Ok(result);
             }
             catch (UserNotFoundException)
             {
                 return Problem($"User with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
-
-            return Ok();
         }
 
         /// <summary>
@@ -143,7 +142,7 @@ namespace evoWatch.Controllers
         /// <response code="200"></response>
         [HttpGet(Name = nameof(GetUsers))]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<UserDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetUsersAsync();
