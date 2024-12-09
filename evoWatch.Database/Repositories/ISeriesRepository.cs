@@ -9,12 +9,10 @@ namespace evoWatch.Database.Repositories
 {
     public interface ISeriesRepository
     {
-        Task<List<Series>> GetSeriesAsync();
+        Task<IEnumerable<Series>> GetSeriesAsync();
         Task<Series> AddSeriesAsync(Series series);
-        Task<Series> UpdateSeriesAsync(Series series);  ///UPDATE
+        Task<Series> UpdateSeriesAsync(Series series);
         Task<Series?> GetSeriesByIdAsync(Guid id);  
-        Task<bool> DeleteSeriesAsync(Series series); ///DELETE
-
-
+        Task<bool> DeleteSeriesAsync(Series series);
     }
 }
