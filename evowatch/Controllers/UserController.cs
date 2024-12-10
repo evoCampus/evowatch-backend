@@ -10,10 +10,12 @@ namespace evoWatch.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IProfilePictureService _profilePictureService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService,IProfilePictureService profilePictureService)
         {
             _userService = userService;
+            _profilePictureService = profilePictureService;
         }
 
         /// <summary> 
@@ -36,5 +38,6 @@ namespace evoWatch.Controllers
             var result = await _userService.GetUsersAsync();
             return Ok(result);
         }
+
     }
 }

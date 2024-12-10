@@ -2,6 +2,9 @@ using System.Reflection;
 using evoWatch;
 using evoWatch.Database;
 
+var exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+Directory.SetCurrentDirectory(exeDir);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
