@@ -151,9 +151,26 @@ namespace evoWatch.Controllers
             return Ok(result);
         }
 
-        [HttpPut("profile-picture/{id:Guid}", Name = nameof(ModifyUserProfilePicture))]
+        /// <summary>
+        /// Updates the profile picture of a user.
+        /// </summary>
+        /// <param name="profile">
+        /// A <see cref="ProfilePictureFormDTO"/> containing:
+        /// - <see cref="ProfilePictureFormDTO.userId"/>: The unique identifier of the user whose profile picture is being updated.
+        /// - <see cref="ProfilePictureFormDTO.file"/>: The new profile picture file to be uploaded.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IActionResult"/>:
+        /// - <see cref="StatusCodes.Status200OK"/> if the profile picture was successfully updated, with a <see cref="UserDTO"/> response.
+        /// - <see cref="StatusCodes.Status404NotFound"/> if the user with the specified ID does not exist.
+        /// </returns>
+        /// <response code="200">Returns the updated user information as a <see cref="UserDTO"/>.</response>
+        /// <response code="404">If the user with the specified ID is not found.</response>
+
+        [HttpPut("profile-picture", Name = nameof(ModifyUserProfilePicture))]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ModifyUserProfilePicture([FromForm] ProfilePictureFormDTO profile)
         {
             try

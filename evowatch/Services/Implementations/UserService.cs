@@ -12,10 +12,11 @@ namespace evoWatch.Services.Implementations
         private readonly IHashService _hashService;
         private readonly IProfilePictureService _profilePictureService;
 
-        public UserService(IUserRepository userRepository, IHashService hashService)
+        public UserService(IUserRepository userRepository, IHashService hashService,IProfilePictureService profilePictureService)
         {
             _userRepository = userRepository;
             _hashService = hashService;
+            _profilePictureService = profilePictureService;
         }
         public async Task<UserDTO> AddUserAsync(AddUserDTO user)
         {
