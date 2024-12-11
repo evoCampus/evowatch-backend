@@ -151,5 +151,21 @@ namespace evoWatch.Controllers
             return Ok(result);
         }
 
+        [HttpPut("profile-picture/{id:Guid}", Name = nameof(ModifyUserProfilePicture))]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ModifyUserProfilePicture([FromForm] ProfilePictureFormDTO profile)
+        {
+            try
+            {
+                var result = await _userService.ModifyUserProfilePictureAsync(profile.userId, profile.file.OpenReadStream());
+                return Ok(result);
+            }
+            catch (UserNotFoundException)
+            {
+                return Problem($"User with specified ID: {profile.userId} not found", null, StatusCodes.Status404NotFound);
+            }
+        }
+
     }
 }

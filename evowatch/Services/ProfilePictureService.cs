@@ -9,24 +9,26 @@ namespace evoWatch.Services
             _fileSystemService = fileSystemService;
         }
 
-        public async Task<FileStream> GetProfilePictureAsync(Guid userId)
+        public async Task<FileStream> GetProfilePictureAsync(Guid imageId)
         {
             try
             {
-                string filename = $"{userId}.png";
+                string filename = $"{imageId}.png";
                 return await _fileSystemService.ReadAsync(filename);
             }
             catch (FileNotFoundException)
             {
-                throw new InvalidOperationException($"Profile picture for user with id {userId} does not exist.");
+                throw new InvalidOperationException($"Profile picture id {imageId} does not exist.");
             }
             
         }
 
-        public async Task SetProfilePictureAsync(Guid userId, FileStream stream)
+        public async Task<Guid> AddProfilePictureAsync(Stream stream)
         {
-            string filename = $"{userId}.png";
+            Guid imageId = Guid.NewGuid();
+            string filename = $"{imageId}.png";
             await _fileSystemService.WriteAsync(filename, stream);
+            return imageId;
         }
     }
     

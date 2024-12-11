@@ -3,6 +3,6 @@
     public interface IProfilePictureService
     {
         Task<FileStream> GetProfilePictureAsync(Guid userId);
-        Task SetProfilePictureAsync(Guid userId, FileStream stream);
+        Task<Guid> AddProfilePictureAsync(Stream stream);
     }
 }

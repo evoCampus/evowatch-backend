@@ -30,7 +30,7 @@
 
             return new FileStream(filepath, FileMode.Open, FileAccess.Read);
         }
-        public async Task WriteAsync(string filename, FileStream stream)
+        public async Task WriteAsync(string filename, Stream stream)
         {
             if (_basePath is null)
             {

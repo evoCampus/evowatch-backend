@@ -11,5 +11,6 @@ namespace evoWatch.Services
         Task<bool> RemoveUserAsync(Guid id, string password);
         Task<UserDTO> ModifyUserAsync(Guid id, ModifyUserDTO user, string password);
         Task<IEnumerable<UserDTO>> GetUsersAsync();
+        Task<UserDTO> ModifyUserProfilePictureAsync(Guid id, Stream file);
     }
 }
