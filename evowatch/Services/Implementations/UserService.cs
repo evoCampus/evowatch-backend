@@ -1,7 +1,7 @@
 ﻿using evoWatch.Database.Models;
 using evoWatch.Database.Repositories;
-using evoWatch.DTOs;
 using evoWatch.Models;
+using evoWatch.Models.DTOs;
 
 namespace evoWatch.Services.Implementations
 {
@@ -20,7 +20,8 @@ namespace evoWatch.Services.Implementations
             HashResult hashResult = _hashService.HashPassword(user.Password);
 
             var result = new User()
-            {
+            {   
+                Id = Guid.NewGuid(),
                 Email = user.Email,
                 NormalName = user.NormalName,
                 Nickname = user.Nickname,
