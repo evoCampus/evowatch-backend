@@ -14,7 +14,7 @@ namespace evoWatch.Database.Models
         public required string Name { get; set; }
 
         [Required]
-        public DateTime FoundationYear { get; set; }
+        public int FoundationYear { get; set; }
 
         [MaxLength(50, ErrorMessage = "Country cannot be longer than 50 characters.")]
         public string Country { get; set; }
