@@ -21,16 +21,29 @@
                 throw new InvalidOperationException("FileSystemService has not been initialized.");
             }
 
-            throw new NotImplementedException();
+            string filepath = Path.Combine(_basePath, filename);
+
+            if (!File.Exists(filepath))
+            {
+                throw new FileNotFoundException("File not found.", filepath);
+            }
+
+            return new FileStream(filepath, FileMode.Open, FileAccess.Read);
         }
-        public async Task WriteAsync(string filename, Stream stream)
+        public async Task WriteAsync(string filename, FileStream stream)
         {
             if (_basePath is null)
             {
                 throw new InvalidOperationException("FileSystemService has not been initialized.");
             }
 
-            throw new NotImplementedException();
+            
+            string filepath = Path.Combine(_basePath, filename);
+
+            using ( var fileStream = new FileStream(filepath, FileMode.Create, FileAccess.Write))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
         }
     }
 }
