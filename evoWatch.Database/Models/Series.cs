@@ -1,16 +1,30 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace evoWatch.Database.Models
 {
     public class Series
     {
+        [Key] 
         public Guid Id { get; set; }
-        public required string Title { get; set; }
-        public required string Genre { get; set; }
-        public required DateTime ReleaseYear { get; set; }
-        public  DateTime FinalYear { get; set; }
+
+        [Required]
+        [MaxLength(100, ErrorMessage = "Title cannot be longer than 100 characters.")]
+        public string Title { get; set; }
+
+        [Required] 
+        [MaxLength(50, ErrorMessage = "Genre cannot be longer than 50 characters.")]
+        public string Genre { get; set; }
+
+         [Range(1900, 2100, ErrorMessage = "ReleaseYear must be between 1900 and 2100.")]
+        public  int ReleaseYear { get; set; }
+
+        [Range(1900, 2100, ErrorMessage = "ReleaseYear must be between 1900 and 2100.")]
+        public int FinalYear { get; set; }
+
+        [MaxLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
         public string Description { get; set; }
-        
+
         
         public virtual ICollection<Season> Seasons { get; set; }
 
