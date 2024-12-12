@@ -56,7 +56,7 @@ namespace evoWatch.Services.Implementations
 
         public async Task<SeriesDTO> UpdateSeriesAsync(Guid id, SeriesDTO series)
         {
-            var existingSeries = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException(); throw new SeriesNotFoundException();
+            var existingSeries = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException();
 
             existingSeries.Title = series.Title;
             existingSeries.Genre = series.Genre;
