@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen(c => {
 
 builder.Services.AddEvoWatch();
 builder.Services.AddEvoWatchDatabase();
-<<<<<<< HEAD
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<ISeriesService, SeriesService>();
