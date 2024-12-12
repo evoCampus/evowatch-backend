@@ -9,6 +9,6 @@ namespace evoWatch.Database.Models
         public  DateTime FoundationYear { get; set; }
         public  string Country { get; set; }
         public string Website { get; set; }
-        public ICollection<MoviesAndEpisodes> MoviesAndEpisodesList { get; set; }
+        public ICollection<Episode> Episodes { get; set; }
     }
 }
