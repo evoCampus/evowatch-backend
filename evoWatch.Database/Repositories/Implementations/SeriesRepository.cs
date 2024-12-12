@@ -20,14 +20,14 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task<Series> AddSeriesAsync(Series series)
         {
-            var result = _databaseContext.Series.Add(series);
+            var result = await _databaseContext.Series.AddAsync(series);
             await _databaseContext.SaveChangesAsync();
 
 
             return result.Entity;
             
         }
-        public async Task<List<Series>> GetSeriesAsync()
+        public async Task<IEnumerable<Series>> GetSeriesAsync()
         {
             return await _databaseContext.Series.ToListAsync();
         }
@@ -44,11 +44,8 @@ namespace evoWatch.Database.Repositories.Implementations
                  
                 return false;   
             }
-
             
         }
-
-        //UPDATE
         public async Task<Series?> GetSeriesByIdAsync(Guid id)
         {
             return await _databaseContext.Series.FindAsync(id);
@@ -63,9 +60,6 @@ namespace evoWatch.Database.Repositories.Implementations
            return result.Entity;
             
         }
-
-        
-
 
     }
 }
