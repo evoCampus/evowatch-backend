@@ -10,7 +10,7 @@ namespace evoWatch.Database.Models
         public Guid Id { get; set; }
 
         [Required]
-        public required DateTime ReleaseYear { get; set; }
+        public required int ReleaseYear { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "SeasonCount must be greater than or equal to 1.")]
         public int SeasonCount { get; set; } 
@@ -23,6 +23,7 @@ namespace evoWatch.Database.Models
 
         [ForeignKey(nameof(SeriesId))] 
         public virtual Series Series { get; set; } 
+
 
         public virtual ICollection<Episode> Episodes { get; set; }
     }
