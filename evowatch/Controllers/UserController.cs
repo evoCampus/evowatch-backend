@@ -150,6 +150,36 @@ namespace evoWatch.Controllers
             var result = await _userService.GetUsersAsync();
             return Ok(result);
         }
+        /// <summary>
+        /// Retrieves the profile picture of a user by their unique identifier.
+        /// </summary>
+        /// <param name="userId">
+        /// The unique identifier of the user whose profile picture is being retrieved.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IActionResult"/> containing:
+        /// - A PNG image file if the profile picture exists.
+        /// - A <see cref="ProblemDetails"/> response if the profile picture does not exist.
+        /// </returns>
+        /// <response code="200">Returns the user's profile picture as a PNG file.</response>
+        /// <response code="404">If the profile picture for the specified user ID is not found.</response>
+
+        [HttpGet("profile-picture", Name = nameof(GetUserProfilePicture))]
+        [Produces(MediaTypeNames.Image.Png)]
+        [ProducesResponseType(typeof(File),StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserProfilePicture(Guid userId)
+        {
+            try
+            {
+                var result = await _userService.GetUserProfilePicture(userId);
+                return File(result, MediaTypeNames.Image.Png);
+            }
+            catch (InvalidOperationException)
+            {
+                return Problem($"Profile picture id {userId} does not exist.", null, StatusCodes.Status404NotFound);
+            }
+        }
 
         /// <summary>
         /// Updates the profile picture of a user.

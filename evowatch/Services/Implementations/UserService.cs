@@ -75,6 +75,13 @@ namespace evoWatch.Services.Implementations
             return UserDTO.CreateFromUserDocument(result);
         }
 
+        public async Task<FileStream> GetUserProfilePicture(Guid userId)
+        {
+            User user = await _userRepository.GetUserByIdAsync(userId) ?? throw new UserNotFoundException();
+            Guid imageId = Guid.Parse(user.ImageUrl);
+            return await _profilePictureService.GetProfilePictureAsync(imageId);
+        }
+
         public async Task<UserDTO> ModifyUserProfilePictureAsync(Guid id, Stream file)
         {
             User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
