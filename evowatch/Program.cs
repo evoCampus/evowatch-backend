@@ -20,9 +20,6 @@ builder.Services.AddEvoWatchDatabase();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<ISeriesService, SeriesService>();
-=======
-
->>>>>>> 3911b52 (Series services and controller  creating)
 
 var app = builder.Build();
 
