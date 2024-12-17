@@ -1,17 +1,32 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace evoWatch.Database.Models
 {
     public class User
     {
-        public Guid Id { get; set; }
-        public required string NormalName { get; set; }
-        public required string Email { get; set; }
-        public required string PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public bool IsActive { get; set; }
+        [Required]
+        [MaxLength(30, ErrorMessage = "NormalName cannot be longer than: 30")]
+        public string NormalName { get; set; }
+
+        [Required]
+        [MaxLength(32, ErrorMessage = "Email cannot be longer than: 32")]
+        public string Email { get; set; }
+
+        [MaxLength(16, ErrorMessage = "Nickname cannot be longer than: 16")]
         public string Nickname { get; set; }
-        public string ImageUrl { get; set; }
+
+        [MaxLength(2048, ErrorMessage = "ImageUrl cannot be longer than: 2048")]
+        public string? ImageUrl { get; set; }
+
+        public Guid Id { get; set; }
+
+        [Required]
+        public string PasswordHash { get; set; }
+
+        public byte[] PasswordSalt { get; set; }
+
+        public bool IsActive { get; set; }
 
         public User()
         {
