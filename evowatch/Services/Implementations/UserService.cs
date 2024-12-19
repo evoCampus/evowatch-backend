@@ -10,11 +10,13 @@ namespace evoWatch.Services.Implementations
     {
         private readonly IUserRepository _userRepository;
         private readonly IHashService _hashService;
+        private readonly IProfilePictureService _profilePictureService;
 
-        public UserService(IUserRepository userRepository, IHashService hashService)
+        public UserService(IUserRepository userRepository, IHashService hashService,IProfilePictureService profilePictureService)
         {
             _userRepository = userRepository;
             _hashService = hashService;
+            _profilePictureService = profilePictureService;
         }
         public async Task<UserDTO> AddUserAsync(AddUserDTO user)
         {
@@ -71,6 +73,25 @@ namespace evoWatch.Services.Implementations
 
             var result = await _userRepository.ModifyUserAsync(modifiedUser);
             return UserDTO.CreateFromUserDocument(result);
+        }
+
+        public async Task<FileStream> GetUserProfilePicture(Guid userId)
+        {
+            User user = await _userRepository.GetUserByIdAsync(userId) ?? throw new UserNotFoundException();
+            Guid imageId = Guid.Parse(user.ImageUrl);
+            return await _profilePictureService.GetProfilePictureAsync(imageId);
+        }
+
+        public async Task<UserDTO> ModifyUserProfilePictureAsync(Guid id, Stream file)
+        {
+            User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
+
+            Guid imageId = await _profilePictureService.AddProfilePictureAsync(file);
+
+            user.ImageUrl = imageId.ToString();
+            var result = await _userRepository.ModifyUserAsync(user);
+            return UserDTO.CreateFromUserDocument(result);
+
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()

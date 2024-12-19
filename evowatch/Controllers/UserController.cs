@@ -11,10 +11,12 @@ namespace evoWatch.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IProfilePictureService _profilePictureService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService,IProfilePictureService profilePictureService)
         {
             _userService = userService;
+            _profilePictureService = profilePictureService;
         }
 
         /// <summary> 
@@ -148,5 +150,69 @@ namespace evoWatch.Controllers
             var result = await _userService.GetUsersAsync();
             return Ok(result);
         }
+        /// <summary>
+        /// Retrieves the profile picture of a user by their unique identifier.
+        /// </summary>
+        /// <param name="userId">
+        /// The unique identifier of the user whose profile picture is being retrieved.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IActionResult"/> containing:
+        /// - A PNG image file if the profile picture exists.
+        /// - A <see cref="ProblemDetails"/> response if the profile picture does not exist.
+        /// </returns>
+        /// <response code="200">Returns the user's profile picture as a PNG file.</response>
+        /// <response code="404">If the profile picture for the specified user ID is not found.</response>
+
+        [HttpGet("profile-picture", Name = nameof(GetUserProfilePicture))]
+        [Produces(MediaTypeNames.Image.Png)]
+        [ProducesResponseType(typeof(File),StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserProfilePicture(Guid userId)
+        {
+            try
+            {
+                var result = await _userService.GetUserProfilePicture(userId);
+                return File(result, MediaTypeNames.Image.Png);
+            }
+            catch (InvalidOperationException)
+            {
+                return Problem($"Profile picture id {userId} does not exist.", null, StatusCodes.Status404NotFound);
+            }
+        }
+
+        /// <summary>
+        /// Updates the profile picture of a user.
+        /// </summary>
+        /// <param name="profile">
+        /// A <see cref="ProfilePictureFormDTO"/> containing:
+        /// - <see cref="ProfilePictureFormDTO.userId"/>: The unique identifier of the user whose profile picture is being updated.
+        /// - <see cref="ProfilePictureFormDTO.file"/>: The new profile picture file to be uploaded.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IActionResult"/>:
+        /// - <see cref="StatusCodes.Status200OK"/> if the profile picture was successfully updated, with a <see cref="UserDTO"/> response.
+        /// - <see cref="StatusCodes.Status404NotFound"/> if the user with the specified ID does not exist.
+        /// </returns>
+        /// <response code="200">Returns the updated user information as a <see cref="UserDTO"/>.</response>
+        /// <response code="404">If the user with the specified ID is not found.</response>
+
+        [HttpPut("profile-picture", Name = nameof(ModifyUserProfilePicture))]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ModifyUserProfilePicture([FromForm] ProfilePictureFormDTO profile)
+        {
+            try
+            {
+                var result = await _userService.ModifyUserProfilePictureAsync(profile.userId, profile.file.OpenReadStream());
+                return Ok(result);
+            }
+            catch (UserNotFoundException)
+            {
+                return Problem($"User with specified ID: {profile.userId} not found", null, StatusCodes.Status404NotFound);
+            }
+        }
+
     }
 }
