@@ -37,8 +37,7 @@ namespace evoWatch.Database.Models
         public Guid ProductionCompanyId { get; set; }
         [ForeignKey(nameof(ProductionCompanyId))]
         public virtual ProductionCompany ProductionCompany { get; set; }
-
-        
+  
         public ICollection<PersonEpisode> PersonEpisodes { get; set; }
         public ICollection<Character> Characters { get; set; }
     }

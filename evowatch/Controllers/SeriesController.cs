@@ -125,7 +125,5 @@ namespace evoWatch.Controllers
                 return NotFound("Series not found");
             }
         }
-
-
     }
 }

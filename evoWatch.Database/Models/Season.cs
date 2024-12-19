@@ -23,8 +23,6 @@ namespace evoWatch.Database.Models
 
         [ForeignKey(nameof(SeriesId))] 
         public virtual Series Series { get; set; } 
-
-
         public virtual ICollection<Episode> Episodes { get; set; }
     }
 }

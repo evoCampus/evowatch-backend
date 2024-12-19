@@ -23,10 +23,9 @@ namespace evoWatch.Database.Repositories.Implementations
             var result = await _databaseContext.Series.AddAsync(series);
             await _databaseContext.SaveChangesAsync();
 
-
             return result.Entity;
-            
         }
+
         public async Task<IEnumerable<Series>> GetSeriesAsync()
         {
             return await _databaseContext.Series.ToListAsync();
@@ -43,23 +42,20 @@ namespace evoWatch.Database.Repositories.Implementations
             catch(InvalidOperationException){
                  
                 return false;   
-            }
-            
+            }          
         }
+
         public async Task<Series?> GetSeriesByIdAsync(Guid id)
         {
             return await _databaseContext.Series.FindAsync(id);
-
         }
 
         public async Task<Series> UpdateSeriesAsync(Series series)
         {
             var result = _databaseContext.Series.Update(series);
             await _databaseContext.SaveChangesAsync();
-
-           return result.Entity;
+            return result.Entity;
             
         }
-
     }
 }

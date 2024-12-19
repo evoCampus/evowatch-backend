@@ -18,9 +18,7 @@ namespace evoWatch.Services.Implementations
         public async Task<SeriesDTO> GetSeriesByIdAsync(Guid id)
         {
             var series = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException();
-
-            return SeriesDTO.CreateFromSeriesDocument(series);
-           
+            return SeriesDTO.CreateFromSeriesDocument(series);           
         }
 
         public async Task<SeriesDTO> AddSeriesAsync(SeriesDTO series)
@@ -35,22 +33,14 @@ namespace evoWatch.Services.Implementations
                 Description = series.Description
 
             };
-
             var result = await _seriesRepository.AddSeriesAsync(newSeries);
-            return SeriesDTO.CreateFromSeriesDocument(result);
-
-
-           
+            return SeriesDTO.CreateFromSeriesDocument(result);    
         }
 
         public async Task<IEnumerable<SeriesDTO>> GetSeriesAsync()
         {
-            var result =  await _seriesRepository.GetSeriesAsync();
-
-            
-
-            return result.Select(x => SeriesDTO.CreateFromSeriesDocument(x));
-
+          var result =  await _seriesRepository.GetSeriesAsync();
+          return result.Select(x => SeriesDTO.CreateFromSeriesDocument(x));
 
         }
 
@@ -63,20 +53,15 @@ namespace evoWatch.Services.Implementations
             existingSeries.ReleaseYear = series.ReleaseYear;
             existingSeries.FinalYear = series.FinalYear;
             existingSeries.Description = series.Description;
-
             
             var result = await _seriesRepository.UpdateSeriesAsync(existingSeries);
             return SeriesDTO.CreateFromSeriesDocument(result);
-
         }
 
         public async Task<bool> DeleteSeriesAsync(Guid id)
         {
             var seriesDelete = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException();
-    
             return await _seriesRepository.DeleteSeriesAsync(seriesDelete);
-        }
-
-        
+        }      
     }
 }

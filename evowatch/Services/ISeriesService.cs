@@ -10,8 +10,6 @@ namespace evoWatch.Services
         Task<IEnumerable<SeriesDTO>> GetSeriesAsync();
         Task<SeriesDTO> GetSeriesByIdAsync(Guid id);
         Task<SeriesDTO> UpdateSeriesAsync(Guid id, SeriesDTO series);
-
-        Task<bool> DeleteSeriesAsync(Guid id);
-        
+        Task<bool> DeleteSeriesAsync(Guid id);     
     }
 }
