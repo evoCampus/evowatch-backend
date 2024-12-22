@@ -1,6 +1,4 @@
-﻿using evoWatch.Database.Models;
-using evoWatch.DTOs;
-using System.Collections;
+﻿using evoWatch.DTOs;
 
 namespace evoWatch.Services
 {

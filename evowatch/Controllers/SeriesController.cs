@@ -2,7 +2,6 @@
 using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Services;
-using evoWatch.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace evoWatch.Controllers

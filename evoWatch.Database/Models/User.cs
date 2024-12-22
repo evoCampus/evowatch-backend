@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace evoWatch.Database.Models
+﻿namespace evoWatch.Database.Models
 {
     public class User
     {
