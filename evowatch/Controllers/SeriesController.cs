@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
+using evoWatch.DTOs;
 using evoWatch.Exceptions;
-using evoWatch.Models.DTOs;
 using evoWatch.Services;
 using evoWatch.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;

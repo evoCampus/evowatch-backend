@@ -1,6 +1,6 @@
 using evoWatch.Database.Models;
 
-namespace evoWatch.Models.DTOs
+namespace evoWatch.DTOs
 {
     public class SeriesDTO
     {
@@ -26,5 +26,5 @@ namespace evoWatch.Models.DTOs
 
     }
 
-    
+
 }
