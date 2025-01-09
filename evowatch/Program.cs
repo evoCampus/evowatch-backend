@@ -3,6 +3,7 @@ using evoWatch.Services;
 using evoWatch.Services.Implementations;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using evoWatch.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen(c => {
 });
 
 builder.Services.AddEvoWatch();
-//builder.Services.AddEvoWatchDatabase();
+builder.Services.AddEvoWatchDatabase();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IHashService, HashService>();

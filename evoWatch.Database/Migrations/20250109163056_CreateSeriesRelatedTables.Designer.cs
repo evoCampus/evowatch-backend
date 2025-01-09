@@ -12,8 +12,8 @@ using evoWatch.Database;
 namespace evoWatch.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241212165538_CreateSeriesRelatedModelsMigration")]
-    partial class CreateSeriesRelatedModelsMigration
+    [Migration("20250109163056_CreateSeriesRelatedTables")]
+    partial class CreateSeriesRelatedTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
