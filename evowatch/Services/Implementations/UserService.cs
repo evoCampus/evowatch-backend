@@ -1,8 +1,8 @@
 ﻿using evoWatch.Database.Models;
 using evoWatch.Database.Repositories;
+using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Models;
-using evoWatch.DTOs;
 
 namespace evoWatch.Services.Implementations
 {

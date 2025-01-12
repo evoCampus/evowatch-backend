@@ -1,8 +1,8 @@
-using System.Net.Mime;
 using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace evoWatch.Controllers
 {

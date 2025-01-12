@@ -4,7 +4,6 @@ namespace evoWatch.Database.Models
 {
     public class ProductionCompany
     {
-
         [Key] 
         public Guid Id { get; set; }
 
@@ -22,6 +21,6 @@ namespace evoWatch.Database.Models
         [Url(ErrorMessage = "Please provide a valid URL.")]
         public string Website { get; set; }
 
-        public ICollection<Episode> Episodes { get; set; }
+        public virtual ICollection<Episode> Episodes { get; set; }
     }
 }

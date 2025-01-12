@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace evoWatch.Database.Models
 {
@@ -27,17 +26,11 @@ namespace evoWatch.Database.Models
         [MaxLength(50, ErrorMessage = "Award cannot be longer than 50 characters.")]
         public  string Award { get; set; }
 
-        [Required]
-        public Guid SeasonId { get; set; }
-        [ForeignKey(nameof(SeasonId))]
         public virtual Season Season { get; set; }
 
-        [Required]
-        public Guid ProductionCompanyId { get; set; }
-        [ForeignKey(nameof(ProductionCompanyId))]
         public virtual ProductionCompany ProductionCompany { get; set; }
-  
-        public ICollection<PersonEpisode> PersonEpisodes { get; set; }
-        public ICollection<Character> Characters { get; set; }
+
+        public virtual ICollection<Person> Person { get; set; }
+        public virtual ICollection<Character> Characters { get; set; }
     }
 }

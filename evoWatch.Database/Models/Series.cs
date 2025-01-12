@@ -24,8 +24,6 @@ namespace evoWatch.Database.Models
         [MaxLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
         public string Description { get; set; }
 
-        
         public virtual ICollection<Season> Seasons { get; set; }
-
     }
 }

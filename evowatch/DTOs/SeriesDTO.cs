@@ -10,7 +10,6 @@ namespace evoWatch.DTOs
         public int FinalYear { get; set; }
         public string Description { get; set; }
 
-
         public static SeriesDTO CreateFromSeriesDocument(Series series)
         {
             return new SeriesDTO
@@ -20,11 +19,7 @@ namespace evoWatch.DTOs
                 ReleaseYear = series.ReleaseYear,
                 FinalYear = series.FinalYear,
                 Description = series.Description
-
             };
         }
-
     }
-
-
 }

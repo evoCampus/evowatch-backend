@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace evoWatch.Database.Models
@@ -17,10 +16,6 @@ namespace evoWatch.Database.Models
         [Range(1, int.MaxValue, ErrorMessage = "EpisodeCount must be greater than or equal to 1.")]
         public int EpisodeCount { get; set; }  
 
-        [Required]  
-        public Guid SeriesId { get; set; }
-
-        [ForeignKey(nameof(SeriesId))] 
         public virtual Series Series { get; set; } 
         public virtual ICollection<Episode> Episodes { get; set; }
     }

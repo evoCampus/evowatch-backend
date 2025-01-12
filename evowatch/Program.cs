@@ -1,9 +1,9 @@
 using evoWatch;
+using evoWatch.Database;
 using evoWatch.Services;
 using evoWatch.Services.Implementations;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using evoWatch.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,5 +1,4 @@
 ﻿using evoWatch.Database.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace evoWatch.Database.Repositories.Implementations
 {
@@ -22,7 +21,7 @@ namespace evoWatch.Database.Repositories.Implementations
 
         public async Task<IEnumerable<Series>> GetSeriesAsync()
         {
-            return await _databaseContext.Series.ToListAsync();
+            return await Task.FromResult(_databaseContext.Series.AsEnumerable());
         }
 
         public async Task<bool> DeleteSeriesAsync(Series series)

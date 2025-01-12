@@ -1,11 +1,10 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace evoWatch.Database.Models
 {
     public class Person
     {
-
         [Key] 
         public required Guid Id { get; set; }
 
@@ -25,11 +24,9 @@ namespace evoWatch.Database.Models
         [MaxLength(10, ErrorMessage = "Gender cannot be longer than 10 characters.")]
         public string Gender { get; set; }
 
-        [InverseProperty(nameof(PersonEpisode.People))]
-        public ICollection<PersonEpisode> PeopleEpisodes { get; set; }
+        public virtual ICollection<Episode> Episodes { get; set; }
 
         [InverseProperty(nameof(Character.Person))]
-        public ICollection<Character> Characters { get; set; }
-
+        public virtual ICollection<Character> Characters { get; set; }
     }
 }

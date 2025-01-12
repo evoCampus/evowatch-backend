@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace evoWatch.Database.Models
 {
@@ -19,17 +18,8 @@ namespace evoWatch.Database.Models
         [MaxLength(30, ErrorMessage = "NickName cannot be longer than 30 characters.")]
         public string NickName { get; set; }
 
-        [Required]
-        public required Guid EpisodeId { get; set; }
+        public virtual Episode Episode { get; set; }
 
-        [ForeignKey(nameof(EpisodeId))]
-        public Episode Episode { get; set; }
-
-        [Required]
-        public required Guid PersonId { get; set; }
-
-        [ForeignKey(nameof(PersonId))]
-        public Person Person { get; set; }
-
+        public virtual Person Person { get; set; }
     }
 }
