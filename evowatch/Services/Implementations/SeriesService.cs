@@ -9,8 +9,8 @@ namespace evoWatch.Services.Implementations
     {
         private readonly ISeriesRepository _seriesRepository;
 
-        public SeriesService(ISeriesRepository seriesRepository) {
-
+        public SeriesService(ISeriesRepository seriesRepository) 
+        {
             _seriesRepository = seriesRepository;
         }
 
@@ -30,7 +30,6 @@ namespace evoWatch.Services.Implementations
                 ReleaseYear = series.ReleaseYear,
                 FinalYear = series.FinalYear,
                 Description = series.Description
-
             };
             var result = await _seriesRepository.AddSeriesAsync(newSeries);
             return SeriesDTO.CreateFromSeriesDocument(result);    
@@ -40,7 +39,6 @@ namespace evoWatch.Services.Implementations
         {
           var result =  await _seriesRepository.GetSeriesAsync();
           return result.Select(x => SeriesDTO.CreateFromSeriesDocument(x));
-
         }
 
         public async Task<SeriesDTO> UpdateSeriesAsync(Guid id, SeriesDTO series)

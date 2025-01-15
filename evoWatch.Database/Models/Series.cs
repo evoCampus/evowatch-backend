@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace evoWatch.Database.Models
 {
@@ -23,6 +24,9 @@ namespace evoWatch.Database.Models
 
         [MaxLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
         public string Description { get; set; }
+
+        [NotMapped]
+        public int SeasonsCount => Seasons?.Count() ?? 0;
 
         public virtual ICollection<Season> Seasons { get; set; }
     }

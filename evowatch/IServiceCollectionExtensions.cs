@@ -9,6 +9,7 @@ namespace evoWatch
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<ISeriesService, SeriesService>();
 
             return services;
         }

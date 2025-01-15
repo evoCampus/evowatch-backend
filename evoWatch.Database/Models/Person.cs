@@ -26,7 +26,6 @@ namespace evoWatch.Database.Models
 
         public virtual ICollection<Episode> Episodes { get; set; }
 
-        [InverseProperty(nameof(Character.Person))]
         public virtual ICollection<Character> Characters { get; set; }
     }
 }

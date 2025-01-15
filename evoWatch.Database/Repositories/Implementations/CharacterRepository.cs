@@ -39,7 +39,6 @@ namespace evoWatch.Database.Repositories.Implementations
             }
             catch (InvalidOperationException)
             {
-
                 return false;
             }
         }
@@ -54,7 +53,6 @@ namespace evoWatch.Database.Repositories.Implementations
             var result = _databaseContext.Characters.Update(character);
             await _databaseContext.SaveChangesAsync();
             return result.Entity;
-
         }
     }
 }

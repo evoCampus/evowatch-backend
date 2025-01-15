@@ -31,6 +31,7 @@ namespace evoWatch.Database.Models
         public virtual ProductionCompany ProductionCompany { get; set; }
 
         public virtual ICollection<Person> Person { get; set; }
+
         public virtual ICollection<Character> Characters { get; set; }
     }
 }

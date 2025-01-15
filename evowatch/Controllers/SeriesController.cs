@@ -50,7 +50,7 @@ namespace evoWatch.Controllers
             }
             catch (SeriesNotFoundException)
             {
-                return NotFound("Series not found");
+                return Problem($"Series with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
         }
 
@@ -88,7 +88,7 @@ namespace evoWatch.Controllers
             }
             catch (SeriesNotFoundException)
             {
-                return NotFound("Series not found");
+                return Problem($"Series with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
         }
 
@@ -121,7 +121,7 @@ namespace evoWatch.Controllers
             }
             catch (SeriesNotFoundException)
             {
-                return NotFound("Series not found");
+                return Problem($"Series with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
         }
     }

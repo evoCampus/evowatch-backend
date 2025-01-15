@@ -32,8 +32,8 @@ namespace evoWatch.Database.Repositories.Implementations
                 await _databaseContext.SaveChangesAsync();
                 return true;
             }
-            catch(InvalidOperationException){
-                 
+            catch(InvalidOperationException)
+            {
                 return false;   
             }          
         }
@@ -47,8 +47,7 @@ namespace evoWatch.Database.Repositories.Implementations
         {
             var result = _databaseContext.Series.Update(series);
             await _databaseContext.SaveChangesAsync();
-            return result.Entity;
-            
+            return result.Entity;          
         }
     }
 }
