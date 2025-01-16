@@ -2,9 +2,9 @@
 {
     public interface IFileSystemService
     {
-        Task<FileStream> ReadAsync(string filename);
+        FileStream Read(string filename);
         Task WriteAsync(string filename, Stream stream);
-
         void Initialize(string basePath);
+        void Delete(string filename);
     }
 }

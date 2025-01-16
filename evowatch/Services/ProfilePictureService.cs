@@ -9,16 +9,16 @@ namespace evoWatch.Services
             _fileSystemService = fileSystemService;
         }
 
-        public async Task<FileStream> GetProfilePictureAsync(Guid imageId)
+        public FileStream GetProfilePicture(Guid imageId)
         {
             try
             {
                 string filename = $"{imageId}.png";
-                return await _fileSystemService.ReadAsync(filename);
+                return  _fileSystemService.Read(filename);
             }
             catch (FileNotFoundException)
             {
-                throw new InvalidOperationException($"Profile picture id {imageId} does not exist.");
+                return null;
             }
             
         }
@@ -29,6 +29,12 @@ namespace evoWatch.Services
             string filename = $"{imageId}.png";
             await _fileSystemService.WriteAsync(filename, stream);
             return imageId;
+        }
+
+        public async Task DeleteProfilePictureAsync(Guid imageId)
+        {
+            string filename = $"{imageId}.png";
+            _fileSystemService.Delete(filename);
         }
     }
     

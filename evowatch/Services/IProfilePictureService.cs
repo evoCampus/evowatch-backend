@@ -2,7 +2,8 @@
 {
     public interface IProfilePictureService
     {
-        Task<FileStream> GetProfilePictureAsync(Guid userId);
+        FileStream GetProfilePicture(Guid userId);
         Task<Guid> AddProfilePictureAsync(Stream stream);
+        Task DeleteProfilePictureAsync(Guid imageId);
     }
 }

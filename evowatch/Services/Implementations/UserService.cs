@@ -3,6 +3,7 @@ using evoWatch.Database.Repositories;
 using evoWatch.DTOs;
 using evoWatch.Exceptions;
 using evoWatch.Models;
+using System.Drawing;
 
 namespace evoWatch.Services.Implementations
 {
@@ -27,7 +28,6 @@ namespace evoWatch.Services.Implementations
                 Email = user.Email,
                 NormalName = user.NormalName,
                 Nickname = user.Nickname,
-                ImageUrl = user.ImageUrl,
                 PasswordHash = hashResult.Hash,
                 PasswordSalt = hashResult.Salt,
                 IsActive = true
@@ -78,20 +78,48 @@ namespace evoWatch.Services.Implementations
         public async Task<FileStream> GetUserProfilePicture(Guid userId)
         {
             User user = await _userRepository.GetUserByIdAsync(userId) ?? throw new UserNotFoundException();
-            Guid imageId = Guid.Parse(user.ImageUrl);
-            return await _profilePictureService.GetProfilePictureAsync(imageId);
+
+            return  _profilePictureService.GetProfilePicture(user.ImageId ?? throw new ProfilePictureNotFoundException());
         }
 
         public async Task<UserDTO> ModifyUserProfilePictureAsync(Guid id, Stream file)
         {
+            //check if file is an image, but the System.Drawing.Image moves the pointer
+            long fileInitalPostion = file.Position;
+            var image = Image.FromStream(file);
+            file.Position = fileInitalPostion;
+            
             User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
+
+            if(user.ImageId != null)
+            {
+                await _profilePictureService.DeleteProfilePictureAsync((Guid)user.ImageId);
+            }
 
             Guid imageId = await _profilePictureService.AddProfilePictureAsync(file);
 
-            user.ImageUrl = imageId.ToString();
+            user.ImageId = imageId;
+
             var result = await _userRepository.ModifyUserAsync(user);
             return UserDTO.CreateFromUserDocument(result);
 
+        }
+
+        public async Task<UserDTO> DeleteUserProfilePictureAsync(Guid id)
+        {
+            User user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException();
+
+            if (user.ImageId == null)
+            {
+                throw new ProfilePictureNotFoundException();
+            }
+
+            await _profilePictureService.DeleteProfilePictureAsync((Guid)user.ImageId);
+
+            user.ImageId = null;
+
+            var result = await _userRepository.ModifyUserAsync(user);
+            return UserDTO.CreateFromUserDocument(result);
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()

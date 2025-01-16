@@ -13,5 +13,6 @@ namespace evoWatch.Services
         Task<IEnumerable<UserDTO>> GetUsersAsync();
         Task<FileStream> GetUserProfilePicture(Guid userId);
         Task<UserDTO> ModifyUserProfilePictureAsync(Guid id, Stream file);
+        Task<UserDTO> DeleteUserProfilePictureAsync(Guid id);
     }
 }

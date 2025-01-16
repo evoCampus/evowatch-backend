@@ -175,9 +175,13 @@ namespace evoWatch.Controllers
                 var result = await _userService.GetUserProfilePicture(userId);
                 return File(result, MediaTypeNames.Image.Png);
             }
-            catch (InvalidOperationException)
+            catch (ProfilePictureNotFoundException)
             {
-                return Problem($"Profile picture id {userId} does not exist.", null, StatusCodes.Status404NotFound);
+                return Problem($"Profile picture for user with {userId} id does not exist.", null, StatusCodes.Status404NotFound);
+            }
+            catch(Exception)
+            {
+                return Problem("An unknown error occurred while retrieving the profile picture.", null, StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -206,11 +210,54 @@ namespace evoWatch.Controllers
             try
             {
                 var result = await _userService.ModifyUserProfilePictureAsync(profile.userId, profile.file.OpenReadStream());
+
                 return Ok(result);
             }
             catch (UserNotFoundException)
             {
                 return Problem($"User with specified ID: {profile.userId} not found", null, StatusCodes.Status404NotFound);
+            }
+            catch(ArgumentException)
+            {
+                return Problem("The file is corrupted or not a valid image.", null, StatusCodes.Status400BadRequest);
+            }
+            catch (Exception)
+            {
+                return Problem("An unknown error occurred while updating the profile picture.", null, StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        /// <summary>
+        /// Deletes  the profile picture of a user by their unique identifier.
+        /// </summary>
+        /// <param name="userId">
+        /// The unique identifier of the user whose profile picture is being retrieved.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IActionResult"/> containing:
+        /// - A PNG image file if the profile picture exists.
+        /// - A <see cref="ProblemDetails"/> response if the profile picture does not exist.
+        /// </returns>
+        /// <response code="200">Returns the user's DTO</response>
+        /// <response code="404">If the profile picture for the specified user ID is not found.</response>
+
+        [HttpDelete("profile-picture", Name = nameof(DeleteUserProfilePicture))]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteUserProfilePicture(Guid userId)
+        {
+            try
+            {
+                var result = await _userService.DeleteUserProfilePictureAsync(userId);
+                return Ok(result);
+            }
+            catch (ProfilePictureNotFoundException)
+            {
+                return Problem($"Profile picture for user with {userId} id does not exist.", null, StatusCodes.Status404NotFound);
+            }
+            catch (Exception)
+            {
+                return Problem("An unknown error occurred while retrieving the profile picture.", null, StatusCodes.Status500InternalServerError);
             }
         }
 

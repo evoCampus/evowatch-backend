@@ -14,7 +14,7 @@
             Directory.CreateDirectory(_basePath);
         }
 
-        public async Task<FileStream> ReadAsync(string filename)
+        public FileStream Read(string filename)
         {
             if(_basePath is null)
             {
@@ -28,7 +28,7 @@
                 throw new FileNotFoundException("File not found.", filepath);
             }
 
-            return new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            return File.OpenRead(filepath);
         }
         public async Task WriteAsync(string filename, Stream stream)
         {
@@ -44,6 +44,22 @@
             {
                 await stream.CopyToAsync(fileStream);
             }
+        }
+        public void Delete(string filename)
+        {
+            if (_basePath is null)
+            {
+                throw new InvalidOperationException("FileSystemService has not been initialized.");
+            }
+
+            string filepath = Path.Combine(_basePath, filename);
+
+            if (!File.Exists(filepath))
+            {
+                throw new FileNotFoundException("File not found.", filepath);
+            }
+
+            File.Delete(filepath);
         }
     }
 }
