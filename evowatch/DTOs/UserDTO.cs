@@ -9,7 +9,7 @@ namespace evoWatch.DTOs
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public string Nickname { get; set; }
-        public string ImageUrl { get; set; }
+        public Guid? ImageId { get; set; }
         
         public static UserDTO CreateFromUserDocument(User user)
         {
@@ -20,7 +20,7 @@ namespace evoWatch.DTOs
                 Email = user.Email,
                 IsActive = user.IsActive,
                 Nickname = user.Nickname,
-                ImageUrl = user.ImageUrl
+                ImageId = user.ImageId
             };
         }
     }
