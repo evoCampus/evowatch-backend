@@ -24,7 +24,8 @@ namespace evoWatch.Services.Implementations
             HashResult hashResult = _hashService.HashPassword(user.Password);
 
             var result = new User()
-            {
+            {   
+                Id = Guid.NewGuid(),
                 Email = user.Email,
                 NormalName = user.NormalName,
                 Nickname = user.Nickname,

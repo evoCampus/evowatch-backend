@@ -16,6 +16,7 @@ namespace evoWatch
                 fileSystemService.Initialize("profilePictures");
                 return new ProfilePictureService(fileSystemService);
             });
+            services.AddScoped<ISeriesService, SeriesService>();
 
             return services;
         }

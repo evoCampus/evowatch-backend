@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using evoWatch.Database;
 
@@ -11,9 +12,11 @@ using evoWatch.Database;
 namespace evoWatch.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250112092907_EditEpisodTables")]
+    partial class EditEpisodTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,7 +194,13 @@ namespace evoWatch.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("EpisodeCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("ReleaseYear")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeasonCount")
                         .HasColumnType("int");
 
                     b.Property<Guid>("SeriesId")
@@ -246,8 +255,9 @@ namespace evoWatch.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ImageId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

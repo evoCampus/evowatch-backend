@@ -23,6 +23,10 @@ builder.Services.AddSwaggerGen(c => {
 builder.Services.AddEvoWatch();
 builder.Services.AddEvoWatchDatabase();
 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IHashService, HashService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
