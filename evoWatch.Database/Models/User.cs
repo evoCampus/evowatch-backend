@@ -9,6 +9,6 @@
         public byte[] PasswordSalt { get; set; }
         public bool IsActive { get; set; }
         public string Nickname { get; set; }
-        public string ImageUrl { get; set; }
+        public Guid? ImageId { get; set; }
     }
 }
