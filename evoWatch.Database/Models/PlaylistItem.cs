@@ -1,9 +1,10 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace evoWatch.Database.Models
 {
     public class PlaylistItem
     {
+        [Key]
         public Guid Id { get; set; }
 
         public int Order { get; set; }
