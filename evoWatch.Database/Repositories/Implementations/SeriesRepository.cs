@@ -49,5 +49,11 @@ namespace evoWatch.Database.Repositories.Implementations
             await _databaseContext.SaveChangesAsync();
             return result.Entity;          
         }
+
+        public async Task<IEnumerable<Series>> GetSeriesByGenreAsync(string genre)
+        {
+            return await Task.FromResult(_databaseContext.Series.AsEnumerable().Where(p => p.Genre.ToLower()== genre.ToLower()));
+        }
+        
     }
 }

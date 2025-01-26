@@ -9,5 +9,7 @@ namespace evoWatch.Database.Repositories
         Task<Series> UpdateSeriesAsync(Series series);
         Task<Series?> GetSeriesByIdAsync(Guid id);  
         Task<bool> DeleteSeriesAsync(Series series);
+        Task<IEnumerable<Series>> GetSeriesByGenreAsync(string genre);
+
     }
 }

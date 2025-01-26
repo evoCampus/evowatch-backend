@@ -59,6 +59,13 @@ namespace evoWatch.Services.Implementations
         {
             var seriesDelete = await _seriesRepository.GetSeriesByIdAsync(id) ?? throw new SeriesNotFoundException();
             return await _seriesRepository.DeleteSeriesAsync(seriesDelete);
-        }      
+        }
+
+        public async Task<IEnumerable<SeriesDTO>> GetSeriesByGenreAsync(string genre)
+        {
+            var result = await _seriesRepository.GetSeriesByGenreAsync(genre) ?? throw new SeriesNotFoundException();
+            return result.Select(x => SeriesDTO.CreateFromSeriesDocument(x));
+        }
+
     }
 }
