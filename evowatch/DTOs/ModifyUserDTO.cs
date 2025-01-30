@@ -8,7 +8,6 @@ namespace evoWatch.DTOs
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public string Nickname { get; set; }
-        public string ImageUrl { get; set; }
 
         public User ConvertToUserDocument(Guid id, string passwordHash, byte[] passwordSalt)
         {
@@ -21,7 +20,7 @@ namespace evoWatch.DTOs
                 PasswordSalt = passwordSalt,
                 IsActive = IsActive == true,
                 Nickname = Nickname,
-                ImageUrl = ImageUrl
+
             };
         }
     }

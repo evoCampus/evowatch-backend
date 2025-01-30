@@ -1,5 +1,5 @@
-﻿using System.Security.Cryptography;
-using evoWatch.Models;
+﻿using evoWatch.Models;
+using System.Security.Cryptography;
 
 namespace evoWatch.Services.Implementations
 {
