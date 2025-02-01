@@ -20,6 +20,8 @@ namespace evoWatch.Database
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISeriesRepository, SeriesRepository>();
+            services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+            services.AddScoped<IPlaylistItemRepository, PlaylistItemRepository>();
 
             return services;
         }

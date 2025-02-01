@@ -12,7 +12,7 @@ using evoWatch.Database;
 namespace evoWatch.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250122201510_Playlists")]
+    [Migration("20250128093607_Playlists")]
     partial class Playlists
     {
         /// <inheritdoc />
@@ -157,6 +157,62 @@ namespace evoWatch.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("People");
+                });
+
+            modelBuilder.Entity("evoWatch.Database.Models.Playlist", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("Public")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Playlist");
+                });
+
+            modelBuilder.Entity("evoWatch.Database.Models.PlaylistItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EpisodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PlaylistId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Watched")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("PlaylistId");
+
+                    b.ToTable("PlaylistItem");
                 });
 
             modelBuilder.Entity("evoWatch.Database.Models.ProductionCompany", b =>
@@ -329,6 +385,36 @@ namespace evoWatch.Database.Migrations
                     b.Navigation("Season");
                 });
 
+            modelBuilder.Entity("evoWatch.Database.Models.Playlist", b =>
+                {
+                    b.HasOne("evoWatch.Database.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("evoWatch.Database.Models.PlaylistItem", b =>
+                {
+                    b.HasOne("evoWatch.Database.Models.Episode", "Episode")
+                        .WithMany()
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("evoWatch.Database.Models.Playlist", "Playlist")
+                        .WithMany("Items")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Episode");
+
+                    b.Navigation("Playlist");
+                });
+
             modelBuilder.Entity("evoWatch.Database.Models.Season", b =>
                 {
                     b.HasOne("evoWatch.Database.Models.Series", "Series")
@@ -348,6 +434,11 @@ namespace evoWatch.Database.Migrations
             modelBuilder.Entity("evoWatch.Database.Models.Person", b =>
                 {
                     b.Navigation("Characters");
+                });
+
+            modelBuilder.Entity("evoWatch.Database.Models.Playlist", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("evoWatch.Database.Models.ProductionCompany", b =>
