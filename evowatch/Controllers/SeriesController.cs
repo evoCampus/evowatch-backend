@@ -124,5 +124,18 @@ namespace evoWatch.Controllers
                 return Problem($"Series with specified ID: {id} not found", null, StatusCodes.Status404NotFound);
             }
         }
+
+        /// <summary>
+        ///  List of all series by selected genre.
+        /// </summary>
+        /// <response code="200">The list of series was successfully listed.</response>
+        [HttpGet("genre")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(IEnumerable<SeriesDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSeriesByGenreAsync([FromQuery] string genre)
+        {             
+                var result = await _seriesService.GetSeriesByGenreAsync(genre);
+                return Ok(result);
+        }
     }
 }

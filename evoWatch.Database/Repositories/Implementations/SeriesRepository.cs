@@ -1,4 +1,5 @@
 ﻿using evoWatch.Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace evoWatch.Database.Repositories.Implementations
 {
@@ -49,5 +50,15 @@ namespace evoWatch.Database.Repositories.Implementations
             await _databaseContext.SaveChangesAsync();
             return result.Entity;          
         }
+
+        public async Task<IEnumerable<Series>> GetSeriesByGenreAsync(string genre)
+        {
+            var series = await _databaseContext.Series
+                .Where(p => p.Genre.ToLower() == genre.ToLower())
+                .ToListAsync();
+
+            return series;
+        }
+
     }
 }
