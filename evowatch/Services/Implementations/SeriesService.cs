@@ -63,8 +63,8 @@ namespace evoWatch.Services.Implementations
 
         public async Task<IEnumerable<SeriesDTO>> GetSeriesByGenreAsync(string genre)
         {
-            var result = await _seriesRepository.GetSeriesByGenreAsync(genre) ?? throw new SeriesNotFoundException();
-            return result.Select(x => SeriesDTO.CreateFromSeriesDocument(x));
+            var result = await _seriesRepository.GetSeriesByGenreAsync(genre);
+            return result.Select(SeriesDTO.CreateFromSeriesDocument);
         }
 
     }

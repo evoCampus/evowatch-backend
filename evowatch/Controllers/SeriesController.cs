@@ -125,8 +125,6 @@ namespace evoWatch.Controllers
             }
         }
 
-
-
         /// <summary>
         ///  List of all series by selected genre.
         /// </summary>
@@ -135,17 +133,9 @@ namespace evoWatch.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(IEnumerable<SeriesDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSeriesByGenreAsync([FromQuery] string genre)
-        {  
-            try
-            {
+        {             
                 var result = await _seriesService.GetSeriesByGenreAsync(genre);
                 return Ok(result);
-            }
-            catch (SeriesNotFoundException)
-            {
-                return Problem($"Series with specified genre: {genre} not found", null, StatusCodes.Status404NotFound);
-            }
         }
-        
     }
 }
