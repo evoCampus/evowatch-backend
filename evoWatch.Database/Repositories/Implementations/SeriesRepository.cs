@@ -54,10 +54,11 @@ namespace evoWatch.Database.Repositories.Implementations
         public async Task<IEnumerable<Series>> GetSeriesByGenreAsync(string genre)
         {
             var series = await _databaseContext.Series
-                .Where(p => p.Genre.Equals(genre, StringComparison.OrdinalIgnoreCase))
+                .Where(p => p.Genre.ToLower() == genre.ToLower())
                 .ToListAsync();
 
             return series;
         }
+
     }
 }
